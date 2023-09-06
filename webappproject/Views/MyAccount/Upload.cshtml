@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Upload" enctype="multipart/form-data">
+
+    <h3 style="color:red;">@TempData["Error"]</h3>
+
+    <div class="form-group">
+        <label for="imageFile">Select the first image to upload:</label>
+        <input type="file" id="imageFile" name="imageFile" class="form-control-file" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+
+    <div class="form-group">
+        <label for="imageFileSecond">Select the second image to upload:</label>
+        <input type="file" id="imageFileSecond" name="imageFileSecond" class="form-control-file" />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>

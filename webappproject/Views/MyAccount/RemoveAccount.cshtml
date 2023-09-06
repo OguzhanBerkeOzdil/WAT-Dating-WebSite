@@ -1,0 +1,30 @@
+﻿@model webappproject.MVVM.RemoveAccountVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("RemoveAccount", "MyAccount", FormMethod.Post, new { @id = "MyForm" }))
+{
+    <div class="form-horizontal">
+        <h2>Remove Account</h2>
+        <h3 style="color:red;">@TempData["Error"]</h3>
+        <hr />
+
+        <h4>If you want to delete your accoun type "YES I WANT TO DELETE THE ACCOUNT"</h4>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Verify, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Verify, new { htmlAttributes = new { @class = "form-control",@type="text" } })
+                @Html.ValidationMessageFor(model => model.Verify, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Remove Account" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

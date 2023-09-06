@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .user-row {
+        border-bottom: 1px solid #ccc; /* Adjust the line style and color as needed */
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr class="user-row">
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>
+                    <form method="post" action="UnbanUser" onsubmit="return confirm('Are you sure you want to unban this email?');">
+                        <input type="hidden" name="emailId" value="@user.Id" />
+                        <button type="submit">Unban</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

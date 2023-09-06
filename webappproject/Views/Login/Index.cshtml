@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/Login/Login" method="post">
+    <div class="form-horizontal">
+        <h2>Login Page</h2>
+        <h3 style="color:red;">@TempData["LoginError"]</h3>
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2">Email</label>
+            <div class="col-md-10">
+                <input type="email" name="email" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <label class="control-label col-md-2">Password</label>
+            <div class="col-md-10">
+                <input type="password" name="password" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Login" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>

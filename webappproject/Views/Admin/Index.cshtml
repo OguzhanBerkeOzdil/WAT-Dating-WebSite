@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table class="table table-hover">
+    <tbody>
+        <tr>
+            <td>@Html.ActionLink("List of Users", "Detail", "Admin")</td>
+            <td>@Html.ActionLink("List of Banned Users", "BannedUserDetail", "Admin")</td>
+        </tr>
+    </tbody>
+</table>

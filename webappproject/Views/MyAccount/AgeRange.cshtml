@@ -1,0 +1,40 @@
+﻿@model webappproject.MVVM.ChangeAgeRange
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h2>Prefered Age</h2>
+        <h3 style="color:red;">@TempData["error"]</h3>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SliderValue1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SliderValue1, new { htmlAttributes = new { @class = "form-control", @type="number", @step="18" } })
+                @Html.ValidationMessageFor(model => model.SliderValue1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SliderValue2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SliderValue2, new { htmlAttributes = new { @class = "form-control", @type="number", @step="1" } })
+                @Html.ValidationMessageFor(model => model.SliderValue2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+

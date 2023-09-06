@@ -1,0 +1,58 @@
+﻿@model webappproject.MVVM.ChangeBioTagsVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("ChangeBioTags", "MyAccount", FormMethod.Post, new { @id = "MyForm" }))
+{
+    <div class="form-horizontal">
+        <h2>Biography and Tags</h2>
+        <h3 style="color:red;">@TempData["Error"]</h3>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Biography, new { @class = "form-control", rows = 4 })
+                @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tag1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Tag1, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Basketball", Value = "Basketball" },
+                    new SelectListItem { Text = "Coffee", Value = "Coffee" },
+                    new SelectListItem { Text = "Drinking", Value = "Drinking" },
+                    new SelectListItem { Text = "Dancing", Value = "Dancing" }
+                }, "Value", "Text"), "Select an option", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Tag1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tag2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Tag2, new SelectList(new[]
+                {
+                    new SelectListItem { Text = "Basketball", Value = "Basketball" },
+                    new SelectListItem { Text = "Coffee", Value = "Coffee" },
+                    new SelectListItem { Text = "Drinking", Value = "Drinking" },
+                    new SelectListItem { Text = "Dancing", Value = "Dancing" }
+                }, "Value", "Text"), "Select an option", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Tag2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Change Email" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+

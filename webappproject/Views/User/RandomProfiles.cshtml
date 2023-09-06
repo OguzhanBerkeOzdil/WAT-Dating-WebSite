@@ -1,0 +1,33 @@
+﻿@model webappproject.Models.User
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Random User Profile Links:</h3>
+
+<div class="d-flex">
+
+    <div class="card" style="width: 18rem; margin-right: 10px;">
+        <img src="@ViewBag.UserImagePathFirst" class="card-img-top" alt="">
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.UserNameSurnameFirst</h5>
+            <p>@ViewBag.UserTag1</p>
+            <p class="card-text">@ViewBag.UserBiography2</p>           
+            <a href="@ViewBag.ProfileLink2" class="btn btn-primary">View Profile</a>
+        </div>
+    </div>
+
+    <div class="card" style="width: 18rem; margin-right: 10px;">
+        <img src="@ViewBag.UserImagePathSecond" class="card-img-top" alt="">
+        <div class="card-body">
+            <h5 class="card-title">@ViewBag.UserNameSurnameSecond</h5>
+            <p>@ViewBag.UserTag2</p>
+            <p class="card-text">@ViewBag.UserBiography2</p>
+            <a href="@ViewBag.ProfileLink2" class="btn btn-primary">View Profile</a>
+        </div>
+    </div>
+
+</div>
+
