@@ -7,9 +7,16 @@ namespace webappproject.Controllers
 {
     public class RegisterController : Controller
     {
-        UserService _userService = new UserService();
-        RolService _rolService = new RolService();
-        BanService _banService = new BanService();
+        private readonly UserService _userService;
+        private readonly RolService _rolService;
+        private readonly BanService _banService;
+
+        public RegisterController(UserService userService, RolService rolService, BanService banService)
+        {
+            _userService = userService;
+            _rolService = rolService;
+            _banService = banService;
+        }
 
         public IActionResult Index()
         {
@@ -68,7 +75,13 @@ namespace webappproject.Controllers
             }
 
             model.FirstLogIn = true;
-            model.RolId = _rolService.Get(x => x.Name == "User").First().Id;
+            var userRole = _rolService.Get(x => x.Name == "User").FirstOrDefault();
+            if (userRole == null)
+            {
+                TempData["error"] += "User role not found. Please contact administrator. ";
+                return View(model);
+            }
+            model.RolId = userRole.Id;
 
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var stringChars = new char[10];

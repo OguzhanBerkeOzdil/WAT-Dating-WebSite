@@ -1,21 +1,239 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Upload Photos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form asp-action="Upload" enctype="multipart/form-data">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-camera-retro me-2"></i>
+                        Upload Your Photos
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">Show your best self with beautiful photos</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
 
-    <h3 style="color:red;">@TempData["Error"]</h3>
+                    <form asp-action="Upload" enctype="multipart/form-data" class="upload-form">
+                        <div class="row">
+                            <!-- First Photo Upload -->
+                            <div class="col-md-6 mb-4">
+                                <div class="upload-area" id="uploadArea1">
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                        <h5>Primary Photo</h5>
+                                        <p class="text-muted mb-3">Drag & drop or click to upload</p>
+                                        <input type="file" id="imageFile" name="imageFile" class="file-input" accept="image/*" />
+                                        <label for="imageFile" class="btn btn-outline-gradient">
+                                            <i class="fas fa-folder-open me-2"></i>Choose File
+                                        </label>
+                                    </div>
+                                    <div class="preview-container" id="preview1" style="display: none;">
+                                        <img class="preview-image" alt="Preview" />
+                                        <div class="preview-overlay">
+                                            <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removePreview(1)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-    <div class="form-group">
-        <label for="imageFile">Select the first image to upload:</label>
-        <input type="file" id="imageFile" name="imageFile" class="form-control-file" />
+                            <!-- Second Photo Upload -->
+                            <div class="col-md-6 mb-4">
+                                <div class="upload-area" id="uploadArea2">
+                                    <div class="upload-content">
+                                        <i class="fas fa-images fa-3x text-secondary mb-3"></i>
+                                        <h5>Secondary Photo</h5>
+                                        <p class="text-muted mb-3">Drag & drop or click to upload</p>
+                                        <input type="file" id="imageFileSecond" name="imageFileSecond" class="file-input" accept="image/*" />
+                                        <label for="imageFileSecond" class="btn btn-outline-gradient">
+                                            <i class="fas fa-folder-open me-2"></i>Choose File
+                                        </label>
+                                    </div>
+                                    <div class="preview-container" id="preview2" style="display: none;">
+                                        <img class="preview-image" alt="Preview" />
+                                        <div class="preview-overlay">
+                                            <button type="button" class="btn btn-danger btn-sm remove-btn" onclick="removePreview(2)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-gradient btn-lg px-5 upload-submit-btn">
+                                <i class="fas fa-upload me-2"></i>
+                                💫 Upload Photos
+                            </button>
+                        </div>
+
+                        <div class="upload-tips mt-4">
+                            <h6><i class="fas fa-lightbulb text-warning me-2"></i>Photo Tips</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Use high-quality photos (min. 400x400px)</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Show your face clearly</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Use natural lighting</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Supported formats: JPG, PNG, GIF</li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-controller="MyAccount" asp-action="Index" class="btn btn-back-profile">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                </a>
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
+</div>
 
-    <div class="form-group">
-        <label for="imageFileSecond">Select the second image to upload:</label>
-        <input type="file" id="imageFileSecond" name="imageFileSecond" class="form-control-file" />
-    </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
-</form>
+<style>
+.upload-area {
+    border: 2px dashed #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    background: #fafafa;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-area:hover {
+    border-color: #007bff;
+    background: rgba(0, 123, 255, 0.05);
+}
+
+.upload-area.dragover {
+    border-color: #007bff;
+    background: rgba(0, 123, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-content h5 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.preview-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.preview-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.upload-tips {
+    background: rgba(0, 123, 255, 0.05);
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 4px solid #007bff;
+}
+
+.upload-tips h6 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.upload-tips li {
+    color: #666;
+    margin-bottom: 8px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setupFileUpload('imageFile', 1);
+    setupFileUpload('imageFileSecond', 2);
+});
+
+function setupFileUpload(inputId, index) {
+    const input = document.getElementById(inputId);
+    const uploadArea = document.getElementById('uploadArea' + index);
+    const preview = document.getElementById('preview' + index);
+    
+    input.addEventListener('change', function(e) {
+        handleFileSelect(e.target.files[0], index);
+    });
+    
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            input.files = files;
+            handleFileSelect(files[0], index);
+        }
+    });
+}
+
+function handleFileSelect(file, index) {
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('preview' + index);
+            const uploadContent = document.querySelector('#uploadArea' + index + ' .upload-content');
+            const previewImg = preview.querySelector('.preview-image');
+            
+            previewImg.src = e.target.result;
+            uploadContent.style.display = 'none';
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removePreview(index) {
+    const input = document.getElementById(index === 1 ? 'imageFile' : 'imageFileSecond');
+    const preview = document.getElementById('preview' + index);
+    const uploadContent = document.querySelector('#uploadArea' + index + ' .upload-content');
+    
+    input.value = '';
+    preview.style.display = 'none';
+    uploadContent.style.display = 'block';
+}
+</script>

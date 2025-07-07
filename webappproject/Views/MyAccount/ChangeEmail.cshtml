@@ -1,46 +1,245 @@
 ﻿@model webappproject.MVVM.ChangeEmailVM
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Change Email Address";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white text-center py-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-envelope me-2"></i>
+                        Change Email Address
+                    </h2>
+                    <p class="mb-0 mt-2 opacity-75">Update your email address securely</p>
+                </div>
+                
+                <div class="card-body p-5">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
 
-@using (Html.BeginForm("ChangeEmail", "MyAccount", FormMethod.Post, new { @id = "MyForm" }))
-{
-    <div class="form-horizontal">
-        <h2>ChangePassword</h2>
-        <h3 style="color:red;">@TempData["Error"]</h3>
-        <hr />
+                    @using (Html.BeginForm("ChangeEmail", "MyAccount", FormMethod.Post, new { @class = "change-email-form", @id = "changeEmailForm" }))
+                    {
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-envelope text-primary me-2"></i>New Email Address
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-at"></i>
+                                </span>
+                                @Html.EditorFor(model => model.newEmail, new { 
+                                    htmlAttributes = new { 
+                                        @class = "form-control form-control-lg",
+                                        @type = "email",
+                                        @placeholder = "Enter your new email address",
+                                        @autocomplete = "email"
+                                    } 
+                                })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.newEmail, "", new { @class = "text-danger small mt-1" })
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.newEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.newEmail, new { htmlAttributes = new { @class = "form-control",@type= "email" } })
-                @Html.ValidationMessageFor(model => model.newEmail, "", new { @class = "text-danger" })
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-envelope-open text-secondary me-2"></i>Current Email Address
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-check-circle"></i>
+                                </span>
+                                @Html.EditorFor(model => model.oldEmail, new { 
+                                    htmlAttributes = new { 
+                                        @class = "form-control form-control-lg",
+                                        @type = "email",
+                                        @placeholder = "Confirm your current email address",
+                                        @autocomplete = "email"
+                                    } 
+                                })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.oldEmail, "", new { @class = "text-danger small mt-1" })
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-lock text-warning me-2"></i>Password Confirmation
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                                @Html.EditorFor(model => model.Password, new { 
+                                    htmlAttributes = new { 
+                                        @class = "form-control form-control-lg",
+                                        @type = "password",
+                                        @placeholder = "Enter your password to confirm",
+                                        @autocomplete = "current-password"
+                                    } 
+                                })
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small mt-1" })
+                        </div>
+
+                        <div class="d-grid gap-2 mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                Update Email Address
+                            </button>
+                        </div>
+
+                        <div class="security-notice">
+                            <div class="alert alert-info border-0">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-shield-alt me-2"></i>Security Notice
+                                </h6>
+                                <ul class="mb-0 small">
+                                    <li>You'll need to verify your new email address</li>
+                                    <li>Your current password is required for security</li>
+                                    <li>You'll be logged out after the change</li>
+                                    <li>Use a secure, unique email address</li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.oldEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.oldEmail, new { htmlAttributes = new { @class = "form-control",@type= "email" } })
-                @Html.ValidationMessageFor(model => model.oldEmail, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Change Email" class="btn btn-default" />
+            <div class="text-center mt-4">
+                <a asp-controller="MyAccount" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                </a>
             </div>
         </div>
     </div>
+</div>
+
+<style>
+.change-email-form .form-label {
+    color: #333;
+    margin-bottom: 8px;
 }
+
+.input-group-text {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-color: #e0e0e0;
+    color: #007bff;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.security-notice {
+    background: linear-gradient(135deg, rgba(23, 162, 184, 0.05), rgba(0, 123, 255, 0.05));
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.security-notice .alert {
+    background: transparent;
+    margin-bottom: 0;
+}
+
+.security-notice .alert-heading {
+    color: #17a2b8;
+    margin-bottom: 10px;
+}
+
+.security-notice li {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.card {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+}
+
+@@media (max-width: 768px) {
+    .container {
+        padding: 20px 15px;
+    }
+    
+    .card-body {
+        padding: 30px 20px !important;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.querySelector('input[name="Password"]');
+    
+    if (togglePassword && passwordField) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    }
+
+    // Form validation
+    const form = document.getElementById('changeEmailForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const newEmail = document.querySelector('input[name="newEmail"]').value;
+            const oldEmail = document.querySelector('input[name="oldEmail"]').value;
+            const password = document.querySelector('input[name="Password"]').value;
+            
+            if (!newEmail || !oldEmail || !password) {
+                e.preventDefault();
+                alert('Please fill in all fields.');
+                return false;
+            }
+            
+            if (newEmail === oldEmail) {
+                e.preventDefault();
+                alert('New email must be different from current email.');
+                return false;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\\s@@]+@@[^\\s@@]+\\.[^\\s@@]+$/;
+            if (!emailRegex.test(newEmail)) {
+                e.preventDefault();
+                alert('Please enter a valid email address.');
+                return false;
+            }
+        });
+    }
+});
+</script>

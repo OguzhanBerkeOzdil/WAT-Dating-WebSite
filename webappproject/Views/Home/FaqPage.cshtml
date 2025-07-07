@@ -1,6 +1,535 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "FAQ";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    .category-btn {
+        padding: 20px 10px;
+        height: 100px;
+        transition: all 0.3s ease;
+        border: 2px solid;
+    }
+    
+    .category-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .category-btn[data-category="getting-started"] {
+        border-color: #0d6efd;
+        color: #0d6efd;
+    }
+    .category-btn[data-category="getting-started"]:hover,
+    .category-btn[data-category="getting-started"].active {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .category-btn[data-category="account"] {
+        border-color: #198754;
+        color: #198754;
+    }
+    .category-btn[data-category="account"]:hover,
+    .category-btn[data-category="account"].active {
+        background-color: #198754;
+        color: white;
+    }
+    
+    .category-btn[data-category="matching"] {
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+    .category-btn[data-category="matching"]:hover,
+    .category-btn[data-category="matching"].active {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .category-btn[data-category="safety"] {
+        border-color: #ffc107;
+        color: #ffc107;
+    }
+    .category-btn[data-category="safety"]:hover,
+    .category-btn[data-category="safety"].active {
+        background-color: #ffc107;
+        color: #000;
+    }
+</style>
+
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 100px 0; color: white; text-align: center;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Frequently Asked Questions</h1>
+        <p class="lead mb-0">Find answers to the most common questions about LoveConnect</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="search-faq text-center">
+                <h3 class="mb-4">Search FAQs</h3>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" placeholder="What would you like to know?" id="faqSearch">
+                    <button class="btn btn-primary" type="button" onclick="searchFAQ()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="faq-categories">
+                <h2 class="text-center fw-bold mb-5">Browse by Category</h2>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-primary w-100 category-btn active" data-category="getting-started">
+                            <i class="fas fa-rocket"></i><br>Getting Started
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-success w-100 category-btn" data-category="account">
+                            <i class="fas fa-user-cog"></i><br>Account Management
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-danger w-100 category-btn" data-category="matching">
+                            <i class="fas fa-heart"></i><br>Matching & Messaging
+                        </button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <button class="btn btn-outline-warning w-100 category-btn" data-category="safety">
+                            <i class="fas fa-shield-alt"></i><br>Safety & Privacy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Getting Started FAQs -->
+    <div class="faq-section" id="getting-started">
+        <h3 class="fw-bold mb-4"><i class="fas fa-rocket text-primary"></i> Getting Started</h3>
+        <div class="accordion" id="gettingStartedAccordion">
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#gs1">
+                        How do I create an account on LoveConnect?
+                    </button>
+                </h4>
+                <div id="gs1" class="accordion-collapse collapse show" data-bs-parent="#gettingStartedAccordion">
+                    <div class="accordion-body">
+                        <p>Creating an account is simple:</p>
+                        <ol>
+                            <li>Click "Register" on our homepage</li>
+                            <li>Enter your email, create a secure password</li>
+                            <li>Verify your email address</li>
+                            <li>Complete your profile with photos and information</li>
+                            <li>Set your preferences and start matching!</li>
+                        </ol>
+                        <p>The entire process takes about 5-10 minutes.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gs2">
+                        What information do I need to provide?
+                    </button>
+                </h4>
+                <div id="gs2" class="accordion-collapse collapse" data-bs-parent="#gettingStartedAccordion">
+                    <div class="accordion-body">
+                        <p>To create a complete profile, you'll need:</p>
+                        <ul>
+                            <li>Valid email address</li>
+                            <li>Age (must be 18 or older)</li>
+                            <li>Gender and preferences</li>
+                            <li>Location or preferred location range</li>
+                            <li>At least one clear photo of yourself</li>
+                            <li>Brief bio describing yourself</li>
+                        </ul>
+                        <p>All information is kept secure and private according to our Privacy Policy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gs3">
+                        How do I add photos to my profile?
+                    </button>
+                </h4>
+                <div id="gs3" class="accordion-collapse collapse" data-bs-parent="#gettingStartedAccordion">
+                    <div class="accordion-body">
+                        <p>To add photos:</p>
+                        <ol>
+                            <li>Go to your profile by clicking "My Profile"</li>
+                            <li>Click "Upload Photos" or "Manage Photos"</li>
+                            <li>Select photos from your device</li>
+                            <li>Crop and adjust as needed</li>
+                            <li>Set your main profile photo</li>
+                        </ol>
+                        <p><strong>Tips:</strong> Use clear, recent photos that show your face. Avoid group photos as your main picture.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Management FAQs -->
+    <div class="faq-section d-none" id="account">
+        <h3 class="fw-bold mb-4"><i class="fas fa-user-cog text-success"></i> Account Management</h3>
+        <div class="accordion" id="accountAccordion">
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1">
+                        How do I change my password?
+                    </button>
+                </h4>
+                <div id="acc1" class="accordion-collapse collapse show" data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <p>To change your password:</p>
+                        <ol>
+                            <li>Go to "My Profile" → "Account Settings"</li>
+                            <li>Click "Change Password"</li>
+                            <li>Enter your current password</li>
+                            <li>Enter your new password (must be at least 8 characters)</li>
+                            <li>Confirm your new password</li>
+                            <li>Click "Update Password"</li>
+                        </ol>
+                        <p>For security, you'll be logged out of all devices and need to log in again.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2">
+                        Can I change my email address?
+                    </button>
+                </h4>
+                <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <p>Yes, you can change your email address:</p>
+                        <ol>
+                            <li>Go to "My Profile" → "Account Settings"</li>
+                            <li>Click "Change Email"</li>
+                            <li>Enter your new email address</li>
+                            <li>Verify the new email address</li>
+                        </ol>
+                        <p>You'll receive a confirmation email at your new address to complete the change.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3">
+                        How do I delete my account?
+                    </button>
+                </h4>
+                <div id="acc3" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <p>To permanently delete your account:</p>
+                        <ol>
+                            <li>Go to "My Profile" → "Account Settings"</li>
+                            <li>Scroll down to "Danger Zone"</li>
+                            <li>Click "Delete Account"</li>
+                            <li>Confirm by entering your password</li>
+                            <li>Click "Permanently Delete Account"</li>
+                        </ol>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Warning:</strong> This action is permanent and cannot be undone. All your data will be deleted.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matching & Messaging FAQs -->
+    <div class="faq-section d-none" id="matching">
+        <h3 class="fw-bold mb-4"><i class="fas fa-heart text-danger"></i> Matching & Messaging</h3>
+        <div class="accordion" id="matchingAccordion">
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#match1">
+                        How does the matching system work?
+                    </button>
+                </h4>
+                <div id="match1" class="accordion-collapse collapse show" data-bs-parent="#matchingAccordion">
+                    <div class="accordion-body">
+                        <p>Our matching system considers:</p>
+                        <ul>
+                            <li><strong>Location:</strong> Users within your preferred distance</li>
+                            <li><strong>Age range:</strong> Based on your age preferences</li>
+                            <li><strong>Interests:</strong> Common hobbies and interests</li>
+                            <li><strong>Activity:</strong> Recently active users get priority</li>
+                            <li><strong>Compatibility:</strong> Based on profile completeness and engagement</li>
+                        </ul>
+                        <p>The more complete your profile, the better your matches will be!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#match2">
+                        Can I see who liked my profile?
+                    </button>
+                </h4>
+                <div id="match2" class="accordion-collapse collapse" data-bs-parent="#matchingAccordion">
+                    <div class="accordion-body">
+                        <p>With a premium subscription, you can see who has liked your profile before you swipe. Free users can only see mutual matches.</p>
+                        <p>To upgrade to premium:</p>
+                        <ol>
+                            <li>Go to "My Profile"</li>
+                            <li>Click "Upgrade to Premium"</li>
+                            <li>Choose your subscription plan</li>
+                            <li>Complete the payment</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#match3">
+                        How do I start a conversation?
+                    </button>
+                </h4>
+                <div id="match3" class="accordion-collapse collapse" data-bs-parent="#matchingAccordion">
+                    <div class="accordion-body">
+                        <p>Once you have a mutual match:</p>
+                        <ol>
+                            <li>Go to your "Matches" page</li>
+                            <li>Click on the person you want to message</li>
+                            <li>Type your message in the chat box</li>
+                            <li>Click send</li>
+                        </ol>
+                        <p><strong>Tips for great first messages:</strong></p>
+                        <ul>
+                            <li>Reference something from their profile</li>
+                            <li>Ask an open-ended question</li>
+                            <li>Be genuine and friendly</li>
+                            <li>Avoid generic messages like "Hey" or "What's up?"</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety & Privacy FAQs -->
+    <div class="faq-section d-none" id="safety">
+        <h3 class="fw-bold mb-4"><i class="fas fa-shield-alt text-warning"></i> Safety & Privacy</h3>
+        <div class="accordion" id="safetyAccordion">
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#safety1">
+                        How do I report someone?
+                    </button>
+                </h4>
+                <div id="safety1" class="accordion-collapse collapse show" data-bs-parent="#safetyAccordion">
+                    <div class="accordion-body">
+                        <p>If someone is behaving inappropriately:</p>
+                        <ol>
+                            <li>Go to their profile or message thread</li>
+                            <li>Click the "..." menu button</li>
+                            <li>Select "Report User"</li>
+                            <li>Choose the reason for reporting</li>
+                            <li>Provide additional details if needed</li>
+                            <li>Submit the report</li>
+                        </ol>
+                        <p>Our team reviews all reports within 24 hours and takes appropriate action.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#safety2">
+                        How do I block someone?
+                    </button>
+                </h4>
+                <div id="safety2" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                    <div class="accordion-body">
+                        <p>To block a user:</p>
+                        <ol>
+                            <li>Go to their profile</li>
+                            <li>Click the "..." menu button</li>
+                            <li>Select "Block User"</li>
+                            <li>Confirm the action</li>
+                        </ol>
+                        <p>Blocked users cannot see your profile, message you, or appear in your matches.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h4 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#safety3">
+                        Is my personal information safe?
+                    </button>
+                </h4>
+                <div id="safety3" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                    <div class="accordion-body">
+                        <p>Yes! We take your privacy and security seriously:</p>
+                        <ul>
+                            <li><strong>Encryption:</strong> All data is encrypted in transit and at rest</li>
+                            <li><strong>Privacy Controls:</strong> You control what information is visible</li>
+                            <li><strong>No Data Selling:</strong> We never sell your personal information</li>
+                            <li><strong>Secure Servers:</strong> Your data is stored on secure, monitored servers</li>
+                            <li><strong>Regular Audits:</strong> We conduct regular security audits</li>
+                        </ul>
+                        <p>Read our <a href="@Url.Action("PrivacyPolicy", "Home")">Privacy Policy</a> for complete details.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="still-need-help bg-light p-5 rounded">
+                <h3 class="fw-bold mb-3">Still need help?</h3>
+                <p class="lead mb-4">Can't find what you're looking for? Our support team is here to help!</p>
+                <div class="help-options">
+                    <a href="@Url.Action("Contact", "Home")" class="btn btn-primary btn-lg me-3 mb-2">
+                        <i class="fas fa-envelope"></i> Contact Support
+                    </a>
+                    <a href="@Url.Action("HelpCenter", "Home")" class="btn btn-outline-primary btn-lg mb-2">
+                        <i class="fas fa-life-ring"></i> Help Center
+                    </a>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                    <i class="fas fa-clock"></i> Average response time: 2-4 hours
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.search-faq .input-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.category-btn {
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-btn i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq-section {
+    border-top: 3px solid #e9ecef;
+    padding-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.accordion-button {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-color: rgba(13, 110, 253, 0.125);
+}
+
+.still-need-help {
+    border: 2px solid #dee2e6;
+}
+
+.help-options .btn {
+    margin: 0.25rem;
+}
+
+@@media (max-width: 768px) {
+    .category-btn {
+        margin-bottom: 1rem;
+    }
+    
+    .help-options .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+
+<script>
+// FAQ Category switching
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const faqSections = document.querySelectorAll('.faq-section');
+    
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Hide all FAQ sections
+            faqSections.forEach(section => section.classList.add('d-none'));
+            // Show selected section
+            const targetSection = document.getElementById(this.dataset.category);
+            if (targetSection) {
+                targetSection.classList.remove('d-none');
+            }
+        });
+    });
+});
+
+// FAQ Search functionality
+function searchFAQ() {
+    const searchTerm = document.getElementById('faqSearch').value.toLowerCase();
+    const allAccordions = document.querySelectorAll('.accordion-item');
+    let foundResults = false;
+    
+    // Show all sections for search
+    document.querySelectorAll('.faq-section').forEach(section => {
+        section.classList.remove('d-none');
+    });
+    
+    allAccordions.forEach(item => {
+        const button = item.querySelector('.accordion-button');
+        const body = item.querySelector('.accordion-body');
+        const text = (button.textContent + ' ' + body.textContent).toLowerCase();
+        
+        if (searchTerm === '' || text.includes(searchTerm)) {
+            item.style.display = 'block';
+            if (searchTerm !== '' && text.includes(searchTerm)) {
+                // Open matching accordions
+                const collapse = item.querySelector('.accordion-collapse');
+                if (collapse && !collapse.classList.contains('show')) {
+                    button.click();
+                }
+                foundResults = true;
+            }
+        } else {
+            item.style.display = 'none';
+        }
+    });
+    
+    if (!foundResults && searchTerm !== '') {
+        alert('No results found for "' + searchTerm + '". Try different keywords or browse by category.');
+    }
+}
+
+// Allow Enter key to search
+document.getElementById('faqSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchFAQ();
+    }
+});
+</script>

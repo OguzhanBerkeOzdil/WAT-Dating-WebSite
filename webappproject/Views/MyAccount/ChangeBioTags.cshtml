@@ -1,58 +1,144 @@
 ﻿@model webappproject.MVVM.ChangeBioTagsVM
 
 @{
-    ViewBag.Title = "Index";
+    ViewData["Title"] = "Edit Profile - LoveConnect";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("ChangeBioTags", "MyAccount", FormMethod.Post, new { @id = "MyForm" }))
-{
-    <div class="form-horizontal">
-        <h2>Biography and Tags</h2>
-        <h3 style="color:red;">@TempData["Error"]</h3>
-        <hr />
+<div class="change-bio-tags-container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white text-center py-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-user-edit me-2"></i>
+                            Edit Your Profile
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Update your biography and interests to help others get to know you better</p>
+                    </div>
+                    
+                    <div class="card-body p-5">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Biography, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Biography, new { @class = "form-control", rows = 4 })
-                @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger" })
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        </div>
+        }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tag1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Tag1, new SelectList(new[]
-                {
-                    new SelectListItem { Text = "Basketball", Value = "Basketball" },
-                    new SelectListItem { Text = "Coffee", Value = "Coffee" },
-                    new SelectListItem { Text = "Drinking", Value = "Drinking" },
-                    new SelectListItem { Text = "Dancing", Value = "Dancing" }
-                }, "Value", "Text"), "Select an option", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Tag1, "", new { @class = "text-danger" })
+        @using (Html.BeginForm("ChangeBioTags", "MyAccount", FormMethod.Post, new { @class = "change-bio-form", @id = "changeBioForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-4">
+                <label for="Biography" class="form-label fw-semibold">
+                    <i class="fas fa-quote-left text-primary me-2"></i>Tell Us About Yourself
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    @Html.TextAreaFor(model => model.Biography, new { 
+                        @class = "form-control form-control-lg", 
+                        @rows = 5,
+                        @id = "Biography",
+                        @placeholder = "Write a brief description about yourself, your interests, what you're looking for...",
+                        @maxlength = "500"
+                    })
+                </div>
+                @Html.ValidationMessageFor(model => model.Biography, "", new { @class = "text-danger small mt-1" })
+                <div class="form-text small mt-1 text-muted">
+                    <i class="fas fa-info-circle me-1"></i>This helps others understand who you are. Max 500 characters.
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tag2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Tag2, new SelectList(new[]
-                {
-                    new SelectListItem { Text = "Basketball", Value = "Basketball" },
-                    new SelectListItem { Text = "Coffee", Value = "Coffee" },
-                    new SelectListItem { Text = "Drinking", Value = "Drinking" },
-                    new SelectListItem { Text = "Dancing", Value = "Dancing" }
-                }, "Value", "Text"), "Select an option", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Tag2, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="Tag1" class="form-label fw-semibold">
+                        <i class="fas fa-heart text-primary me-2"></i>First Interest
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-tag"></i>
+                        </span>
+                        @Html.DropDownListFor(model => model.Tag1, new SelectList(new[]
+                        {
+                            new SelectListItem { Text = "Basketball 🏀", Value = "Basketball" },
+                            new SelectListItem { Text = "Coffee ☕", Value = "Coffee" },
+                            new SelectListItem { Text = "Drinking 🍷", Value = "Drinking" },
+                            new SelectListItem { Text = "Dancing 💃", Value = "Dancing" },
+                            new SelectListItem { Text = "Movies 🎬", Value = "Movies" },
+                            new SelectListItem { Text = "Music 🎵", Value = "Music" },
+                            new SelectListItem { Text = "Travel ✈️", Value = "Travel" },
+                            new SelectListItem { Text = "Gaming 🎮", Value = "Gaming" },
+                            new SelectListItem { Text = "Reading 📚", Value = "Reading" },
+                            new SelectListItem { Text = "Cooking 👨‍🍳", Value = "Cooking" },
+                            new SelectListItem { Text = "Fitness 💪", Value = "Fitness" },
+                            new SelectListItem { Text = "Art 🎨", Value = "Art" }
+                        }, "Value", "Text"), "Choose your interest", new { 
+                            @class = "form-control form-control-lg",
+                            @id = "Tag1"
+                        })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Tag1, "", new { @class = "text-danger small mt-1" })
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="Tag2" class="form-label fw-semibold">
+                        <i class="fas fa-star text-warning me-2"></i>Second Interest
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-tag"></i>
+                        </span>
+                        @Html.DropDownListFor(model => model.Tag2, new SelectList(new[]
+                        {
+                            new SelectListItem { Text = "Basketball 🏀", Value = "Basketball" },
+                            new SelectListItem { Text = "Coffee ☕", Value = "Coffee" },
+                            new SelectListItem { Text = "Drinking 🍷", Value = "Drinking" },
+                            new SelectListItem { Text = "Dancing 💃", Value = "Dancing" },
+                            new SelectListItem { Text = "Movies 🎬", Value = "Movies" },
+                            new SelectListItem { Text = "Music 🎵", Value = "Music" },
+                            new SelectListItem { Text = "Travel ✈️", Value = "Travel" },
+                            new SelectListItem { Text = "Gaming 🎮", Value = "Gaming" },
+                            new SelectListItem { Text = "Reading 📚", Value = "Reading" },
+                            new SelectListItem { Text = "Cooking 👨‍🍳", Value = "Cooking" },
+                            new SelectListItem { Text = "Fitness 💪", Value = "Fitness" },
+                            new SelectListItem { Text = "Art 🎨", Value = "Art" }
+                        }, "Value", "Text"), "Choose your interest", new { 
+                            @class = "form-control form-control-lg",
+                            @id = "Tag2"
+                        })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Tag2, "", new { @class = "text-danger small mt-1" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Change Email" class="btn btn-primary" />
+            <div class="mb-4">
+                <div class="form-text small text-muted">
+                    <i class="fas fa-lightbulb me-1"></i>Choose interests that represent you best. This helps us show you to compatible matches!
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-save me-2"></i>Save Changes
+                </button>
+            </div>
+            
+            <div class="text-center">
+                <a href="@Url.Action("Index", "MyAccount")" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                </a>
+            </div>
+        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
+</div>
 

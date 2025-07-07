@@ -16,9 +16,15 @@ namespace webappproject.Models
         public string Tag1 { get; set; } = string.Empty;
         public string Tag2 { get; set; } = string.Empty;
         public bool FirstLogIn { get; set; }
+        public bool IsActive { get; set; } = true;
+        public DateTime LastLoginDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
         public int SliderValue1 { get; set; }
         public int SliderValue2 { get; set; }
         public int Age { get; set; }
         public int RolId { get; set; }
+        
+        // Navigation property
+        public virtual Rol? Rol { get; set; }
     }
 }

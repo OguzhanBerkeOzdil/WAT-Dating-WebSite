@@ -1,6 +1,265 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Contact Us";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="hero-section" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 100px 0; color: white; text-align: center;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Contact Us</h1>
+        <p class="lead mb-0">We'd love to hear from you! Get in touch with our team</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h2 class="fw-bold mb-4">Get in Touch</h2>
+            <p class="lead">Have questions, suggestions, or need support? We're here to help! Our team typically responds within 24 hours.</p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="contact-method text-center h-100">
+                <div class="contact-icon mb-3">
+                    <i class="fas fa-envelope fa-3x text-primary"></i>
+                </div>
+                <h4 class="fw-bold">Email Support</h4>
+                <p class="text-muted mb-3">Get help with your account, technical issues, or general questions</p>
+                <div class="contact-details">
+                    <p><strong>General:</strong> support@loveconnect.com</p>
+                    <p><strong>Technical:</strong> tech@loveconnect.com</p>
+                    <p><strong>Legal:</strong> legal@loveconnect.com</p>
+                </div>
+                <p class="small text-success"><i class="fas fa-clock"></i> Response time: 2-24 hours</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="contact-method text-center h-100">
+                <div class="contact-icon mb-3">
+                    <i class="fas fa-phone fa-3x text-success"></i>
+                </div>
+                <h4 class="fw-bold">Phone Support</h4>
+                <p class="text-muted mb-3">Speak directly with our support team for urgent matters</p>
+                <div class="contact-details">
+                    <p><strong>US/Canada:</strong> +1 (555) 123-4567</p>
+                    <p><strong>International:</strong> +1 (555) 123-4568</p>
+                </div>
+                <p class="small text-info"><i class="fas fa-clock"></i> Mon-Fri: 9AM-9PM PST<br>Sat-Sun: 10AM-6PM PST</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="contact-method text-center h-100">
+                <div class="contact-icon mb-3">
+                    <i class="fas fa-comments fa-3x text-warning"></i>
+                </div>
+                <h4 class="fw-bold">Live Chat</h4>
+                <p class="text-muted mb-3">Get instant help through our live chat system</p>
+                <div class="contact-details">
+                    <p>Available in the app and website</p>
+                    <button class="btn btn-warning btn-sm mt-2" disabled>
+                        <i class="fas fa-comment-dots"></i> Start Chat (Coming Soon)
+                    </button>
+                </div>
+                <p class="small text-warning"><i class="fas fa-clock"></i> 24/7 availability</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4 text-center">Send us a Message</h3>
+                    <form id="contactForm">
+                        @Html.AntiForgeryToken()
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject *</label>
+                            <select class="form-control" id="subject" name="subject" required>
+                                <option value="">Select a subject...</option>
+                                <option value="account">Account Issues</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="billing">Billing Questions</option>
+                                <option value="safety">Safety Concerns</option>
+                                <option value="feedback">Feedback & Suggestions</option>
+                                <option value="partnership">Business Partnership</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" placeholder="Please describe your question or concern in detail..." required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="@Url.Action("TermsOfService", "Home")" target="_blank">Terms of Service</a> and <a href="@Url.Action("PrivacyPolicy", "Home")" target="_blank">Privacy Policy</a> *
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="fw-bold text-center mb-4">Frequently Asked Questions</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="faq-item p-3 bg-light rounded">
+                        <h5 class="fw-bold">How do I reset my password?</h5>
+                        <p class="mb-0">Go to the login page and click "Forgot Password". Enter your email and follow the instructions sent to your inbox.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="faq-item p-3 bg-light rounded">
+                        <h5 class="fw-bold">How do I delete my account?</h5>
+                        <p class="mb-0">In your profile settings, scroll down to "Account Management" and select "Delete Account". This action is permanent.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="faq-item p-3 bg-light rounded">
+                        <h5 class="fw-bold">How do I report someone?</h5>
+                        <p class="mb-0">Click on the user's profile, then click the "Report" button. Choose the reason and provide details. We review all reports within 24 hours.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="faq-item p-3 bg-light rounded">
+                        <h5 class="fw-bold">Is my information secure?</h5>
+                        <p class="mb-0">Yes! We use industry-standard encryption and security measures to protect your data. Read our Privacy Policy for more details.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="@Url.Action("FaqPage", "Home")" class="btn btn-primary me-2">
+                    <i class="fas fa-question-circle"></i> View All FAQs
+                </a>
+                <a href="@Url.Action("HelpCenter", "Home")" class="btn btn-success">
+                    <i class="fas fa-life-ring"></i> Help Center
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="bg-primary text-white p-4 rounded">
+                <h4 class="fw-bold mb-3">Need Immediate Help?</h4>
+                <p class="mb-3">For urgent safety concerns or technical emergencies</p>
+                <div class="emergency-contacts">
+                    <a href="tel:+15551234567" class="btn btn-light btn-lg me-3">
+                        <i class="fas fa-phone"></i> Emergency Hotline
+                    </a>
+                    <a href="mailto:emergency@loveconnect.com" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-envelope"></i> Emergency Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.contact-method {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease;
+}
+
+.contact-method:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.contact-icon {
+    margin-bottom: 1rem;
+}
+
+.contact-details p {
+    margin-bottom: 0.5rem;
+}
+
+.faq-item {
+    border: 1px solid #dee2e6;
+    transition: background-color 0.3s ease;
+}
+
+.faq-item:hover {
+    background-color: #e9ecef !important;
+}
+
+#contactForm .form-control:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25);
+}
+
+.emergency-contacts .btn {
+    margin: 0.25rem;
+}
+
+@@media (max-width: 768px) {
+    .contact-method {
+        margin-bottom: 2rem;
+    }
+    
+    .emergency-contacts .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Basic form validation
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+    
+    if (!firstName || !lastName || !email || !subject || !message || !agreeTerms) {
+        alert('Please fill in all required fields and agree to the terms.');
+        return;
+    }
+    
+    // Show success message (in a real app, this would submit to server)
+    alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+    
+    // Reset form
+    this.reset();
+});
+</script>

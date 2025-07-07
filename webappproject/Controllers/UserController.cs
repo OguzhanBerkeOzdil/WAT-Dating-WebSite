@@ -9,11 +9,15 @@ using webappproject.Services;
 
 namespace webappproject.Controllers
 {
-    [Authorize]
     [Route("[controller]")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
-        UserService _userService = new UserService();
+        private readonly UserService _userService;
+
+        public UserController(UserService userService, BanService banService) : base(banService)
+        {
+            _userService = userService;
+        }
 
         public IActionResult Index()
         {
@@ -22,7 +26,7 @@ namespace webappproject.Controllers
 
 
         [HttpGet("{ProfileUrl}")]
-        public async Task<IActionResult> ProfileAsync(string ProfileUrl)
+        public IActionResult Profile(string ProfileUrl)
         {
             var user = _userService.Get(x => x.ProfileUrl == ProfileUrl).FirstOrDefault();
 
@@ -34,139 +38,146 @@ namespace webappproject.Controllers
             return View(user);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RandomProfilesAsync(string ProfileUrl1, string ProfileUrl2)
+        [HttpGet("Matches")]
+        public IActionResult Matches()
         {
-
-            var cookieName = CookieAuthenticationDefaults.AuthenticationScheme;
-            var cookieValue = Request.Cookies[cookieName];
-
-            var ticket = await HttpContext.AuthenticateAsync(cookieName);
-
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
-            var User = _userService.Get(x => x.Email == email).FirstOrDefault();
-
-            var age1 = User.SliderValue1;
-            var age2 = User.SliderValue2;
-
-            var random = new Random();
-
-            var userNameSurname1 = default(string);
-            var userNameSurname2 = default(string);
-
-            var userImagePath1 = default(string);
-            var userImagePath2 = default(string);
-
-            var userBio1 = default(string);
-            var userBio2 = default(string);
-
-            var userTag1 = default(string);
-            var userTag2 = default(string);
-
-            if (User.Gender == "Male")
+            try
             {
-                //var femaleUsers = _userService.GetAll().Where(user => user.Gender == "Female").ToList();
-
-                var femaleUsers = _userService.GetAll().Where(user => user.Gender == "Female" && user.Age >= age1 && user.Age <= age2).ToList();
-
-
-                if (femaleUsers.Count > 0)
+                // Check if user is authenticated
+                if (!User.Identity?.IsAuthenticated == true)
                 {
-                    var index1 = random.Next(0, femaleUsers.Count);
-                    femaleUsers.RemoveAt(index1);
-
-                    if (femaleUsers.Count > 0)
-                    {
-                        var index2 = random.Next(0, femaleUsers.Count);
-
-                        if (index1 < femaleUsers.Count && index2 < femaleUsers.Count)
-                        {
-                            userNameSurname1 = String.Concat(femaleUsers[index1].Name, " ", femaleUsers[index1].Surname);
-                            userNameSurname2 = String.Concat(femaleUsers[index2].Name, " ", femaleUsers[index2].Surname);
-
-                            userImagePath1 = femaleUsers[index1].ImagePath;
-                            userImagePath2 = femaleUsers[index2].ImagePath;
-
-                            userBio1 = femaleUsers[index1].Biography;
-                            userBio2 = femaleUsers[index2].Biography;
-
-                            userTag1 = String.Concat(femaleUsers[index1].Tag1, ", ", femaleUsers[index1].Tag2);
-                            userTag2 = String.Concat(femaleUsers[index2].Tag1, ", ", femaleUsers[index2].Tag2);
-
-                            ProfileUrl1 = femaleUsers[index1].ProfileUrl;
-                            ProfileUrl2 = femaleUsers[index2].ProfileUrl;
-
-                            if(femaleUsers[index1] == femaleUsers[index2])
-                            {
-                                return RedirectToAction("Index");
-                            }
-                        }
-                        else
-                        {
-                            // Handle the case when the generated indices are out of range
-                            // Redirect back to the same page or return a specific view
-                            return RedirectToAction("Index"); // Example: Redirect to the "Index" action of the same controller
-                        }
-                    }
-                    else
-                    {
-                        // Handle the case when there are no remaining female users
-                        // Redirect back to the same page or return a specific view
-                        return RedirectToAction("Index"); // Example: Redirect to the "Index" action of the same controller
-                    }
-                }
-                else
-                {
-                    // Handle the case when there are no female users available
-                    // Redirect back to the same page or return a specific view
-                    return RedirectToAction("Index"); // Example: Redirect to the "Index" action of the same controller
+                    TempData["Error"] = "Please log in to view matches.";
+                    return RedirectToAction("Index", "Login");
                 }
 
+                var currentUserEmail = User.Identity?.Name;
+                if (string.IsNullOrEmpty(currentUserEmail))
+                {
+                    TempData["Error"] = "Authentication error. Please log in again.";
+                    return RedirectToAction("Index", "Login");
+                }
 
+                var currentUser = _userService.Get(x => x.Email == currentUserEmail).FirstOrDefault();
+                
+                if (currentUser == null)
+                {
+                    TempData["Error"] = "User not found. Please log in again.";
+                    return RedirectToAction("Index", "Login");
+                }
+
+                // Check if user is banned
+                if (_banService.IsBanned(currentUserEmail))
+                {
+                    TempData["Error"] = "Your account has been suspended. Please contact administration.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Generate some dummy matches for demo
+                var dummyMatches = GenerateDummyUsers(6);
+                
+                return View(dummyMatches);
             }
-            else if (User.Gender == "Female")
+            catch (Exception)
             {
-                var maleUsers = _userService.GetAll().Where(user => user.Gender == "Male").ToList();
-
-                var index1 = random.Next(0, maleUsers.Count);
-                maleUsers.RemoveAt(index1);
-
-                var index2 = random.Next(0, maleUsers.Count);
-
-                userNameSurname1 = String.Concat(maleUsers[index1].Name, " ", maleUsers[index1].Surname);
-                userNameSurname2 = String.Concat(maleUsers[index2].Name, " ", maleUsers[index2].Surname);
-
-                userImagePath1 = maleUsers[index1].ImagePath;
-                userImagePath2 = maleUsers[index2].ImagePath;
-
-                userBio1 = maleUsers[index1].Biography;
-                userBio2 = maleUsers[index2].Biography;
-
-                ProfileUrl1 = maleUsers[index1].ProfileUrl;
-                ProfileUrl2 = maleUsers[index2].ProfileUrl;       
+                TempData["Error"] = "An error occurred while loading matches.";
+                return View(new List<User>());
             }
-
-            var profileLink1 = Url.Action("Profile", "User", new { ProfileUrl = ProfileUrl1 });
-            var profileLink2 = Url.Action("Profile", "User", new { ProfileUrl = ProfileUrl2 });
-
-            ViewBag.ProfileLink1 = profileLink1;
-            ViewBag.ProfileLink2 = profileLink2;
-
-            ViewBag.UserNameSurnameFirst = userNameSurname1;
-            ViewBag.UserNameSurnameSecond = userNameSurname2;
-
-            ViewBag.UserImagePathFirst = userImagePath1;
-            ViewBag.UserImagePathSecond = userImagePath2;
-
-            ViewBag.UserBiography1 = userBio1;
-            ViewBag.UserBiography2 = userBio2;
-
-            ViewBag.UserTag1 = userTag1;
-            ViewBag.UserTag2 = userTag2;
-
-            return View();
         }
 
+        [HttpGet("RandomProfiles")]
+        public async Task<IActionResult> RandomProfiles()
+        {
+            try
+            {
+                // Check if user is authenticated
+                if (!User.Identity?.IsAuthenticated == true)
+                {
+                    TempData["Error"] = "Please log in to discover profiles.";
+                    return RedirectToAction("Index", "Login");
+                }
 
+                var currentUserEmail = User.Identity?.Name;
+                if (string.IsNullOrEmpty(currentUserEmail))
+                {
+                    TempData["Error"] = "Authentication error. Please log in again.";
+                    return RedirectToAction("Index", "Login");
+                }
+
+                var currentUser = _userService.Get(x => x.Email == currentUserEmail).FirstOrDefault();
+                
+                if (currentUser == null)
+                {
+                    TempData["Error"] = "User not found. Please log in again.";
+                    return RedirectToAction("Index", "Login");
+                }
+
+                // Check if user is banned
+                if (_banService.IsBanned(currentUserEmail))
+                {
+                    TempData["Error"] = "Your account has been suspended. Please contact administration.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                // Get real users excluding current user or generate dummy users if no real users
+                var users = await _userService.GetAllUsersAsync();
+                var otherUsers = users.Where(u => u.Email != currentUserEmail && u.IsActive).ToList();
+                
+                if (otherUsers.Count == 0)
+                {
+                    // Generate dummy users for demo
+                    otherUsers = GenerateDummyUsers(10);
+                }
+
+                ViewBag.CurrentUser = currentUser;
+                return View(otherUsers);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "An error occurred while loading profiles.";
+                return View(new List<User>());
+            }
+        }
+
+        private List<User> GenerateDummyUsers(int count)
+        {
+            var dummyUsers = new List<User>();
+            var names = new[] { "Emma", "Olivia", "Sophia", "Isabella", "Charlotte", "Amelia", "Mia", "Harper", "Evelyn", "Abigail" };
+            var surnames = new[] { "Wilson", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez" };
+            var bios = new[] { 
+                "Love traveling and exploring new cultures! 🌍",
+                "Coffee enthusiast and book lover ☕📚", 
+                "Adventure seeker and nature lover 🏔️",
+                "Passionate about art and photography 📸",
+                "Fitness enthusiast and yoga instructor 🧘‍♀️",
+                "Foodie and cooking enthusiast 👩‍🍳",
+                "Music lover and guitar player 🎸",
+                "Dog lover and volunteer 🐕",
+                "Science nerd and stargazer 🔬⭐",
+                "Entrepreneur and tech enthusiast 💻"
+            };
+
+            var emojis = new[] { "😊", "🌟", "💃", "🎨", "🏃‍♀️", "📖", "🎵", "🌺", "✨", "🦋" };
+
+            for (int i = 0; i < count; i++)
+            {
+                var random = new Random(i + DateTime.Now.Millisecond);
+                dummyUsers.Add(new User
+                {
+                    Id = 1000 + i,
+                    Name = names[i % names.Length],
+                    Surname = surnames[i % surnames.Length],
+                    Email = $"demo{i}@example.com",
+                    Age = random.Next(22, 35),
+                    Biography = bios[i % bios.Length],
+                    Tag1 = "Music",
+                    Tag2 = "Travel",
+                    IsActive = true,
+                    CreatedDate = DateTime.Now.AddDays(-random.Next(1, 365)),
+                    ImagePath = $"https://via.placeholder.com/400x600/667eea/ffffff?text={emojis[i % emojis.Length]}"
+                });
+            }
+
+            return dummyUsers;
+        }
     }
 }

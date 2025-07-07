@@ -1,0 +1,235 @@
+@model webappproject.Models.User
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>Edit User: @Model.Name @Model.Surname
+                        </h5>
+                        <a href="@Url.Action("Users")" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Users
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="EditUser" asp-route-id="@Model.Id" method="post">
+                        @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.Password)
+                        @Html.HiddenFor(m => m.CreatedDate)
+                        @Html.HiddenFor(m => m.LastLoginDate)
+                        @Html.HiddenFor(m => m.ImagePath)
+                        @Html.HiddenFor(m => m.ImagePath2)
+                        @Html.HiddenFor(m => m.RolId)
+                        @Html.HiddenFor(m => m.ProfileUrl)
+                        @Html.HiddenFor(m => m.FirstLogIn)
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label">First Name</label>
+                                    <input asp-for="Name" class="form-control" required />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Surname" class="form-label">Last Name</label>
+                                    <input asp-for="Surname" class="form-control" required />
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" type="email" class="form-control" required />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Age" class="form-label">Age</label>
+                                    <input asp-for="Age" type="number" class="form-control" min="18" max="100" required />
+                                    <span asp-validation-for="Age" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Gender" class="form-label">Gender</label>
+                                    <select asp-for="Gender" class="form-select" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Account Status</label>
+                                    <div class="form-check">
+                                        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                        <label asp-for="IsActive" class="form-check-label">
+                                            Account is Active
+                                        </label>
+                                    </div>
+                                    <small class="text-muted">Uncheck to deactivate the account</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Tag1" class="form-label">Interest Tag 1</label>
+                                    <input asp-for="Tag1" class="form-control" placeholder="e.g., music, sports" />
+                                    <span asp-validation-for="Tag1" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Tag2" class="form-label">Interest Tag 2</label>
+                                    <input asp-for="Tag2" class="form-control" placeholder="e.g., travel, cooking" />
+                                    <span asp-validation-for="Tag2" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="SliderValue1" class="form-label">Minimum Age Range</label>
+                                    <input asp-for="SliderValue1" type="number" class="form-control" min="18" max="100" />
+                                    <span asp-validation-for="SliderValue1" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="SliderValue2" class="form-label">Maximum Age Range</label>
+                                    <input asp-for="SliderValue2" type="number" class="form-control" min="18" max="100" />
+                                    <span asp-validation-for="SliderValue2" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Biography" class="form-label">Biography</label>
+                            <textarea asp-for="Biography" class="form-control" rows="4" placeholder="Tell us about yourself..."></textarea>
+                            <span asp-validation-for="Biography" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProfileUrl" class="form-label">Profile URL</label>
+                            <input asp-for="ProfileUrl" class="form-control" placeholder="Custom profile URL" />
+                            <span asp-validation-for="ProfileUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ImagePath" class="form-label">Profile Image Path</label>
+                                    <input asp-for="ImagePath" class="form-control" placeholder="Path to profile image" />
+                                    <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="ImagePath2" class="form-label">Additional Image Path</label>
+                                    <input asp-for="ImagePath2" class="form-control" placeholder="Path to additional image" />
+                                    <span asp-validation-for="ImagePath2" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">
+                                <h6 class="mb-0">Account Information</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">
+                                            <strong>User ID:</strong> @Model.Id<br>
+                                            <strong>Role ID:</strong> @Model.RolId<br>
+                                            <strong>Created:</strong> @Model.CreatedDate.ToString("MMM dd, yyyy HH:mm")<br>
+                                        </small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">
+                                            <strong>Last Login:</strong> @Model.LastLoginDate.ToString("MMM dd, yyyy HH:mm")<br>
+                                            <strong>First Login:</strong> @(Model.FirstLogIn ? "Yes" : "No")<br>
+                                            <strong>Status:</strong> @(Model.IsActive ? "Active" : "Inactive")
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Save Changes
+                            </button>
+                            <a href="@Url.Action("UserDetails", new { id = Model.Id })" class="btn btn-info">
+                                <i class="fas fa-eye me-1"></i>View Details
+                            </a>
+                            <a href="@Url.Action("Users")" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Age range validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const minAge = document.getElementById('SliderValue1');
+            const maxAge = document.getElementById('SliderValue2');
+            
+            function validateAgeRange() {
+                const min = parseInt(minAge.value) || 18;
+                const max = parseInt(maxAge.value) || 100;
+                
+                if (min >= max) {
+                    maxAge.value = min + 1;
+                }
+            }
+            
+            minAge.addEventListener('change', validateAgeRange);
+            maxAge.addEventListener('change', validateAgeRange);
+        });
+    </script>
+}

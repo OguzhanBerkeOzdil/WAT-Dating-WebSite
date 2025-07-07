@@ -24,12 +24,42 @@
                 <td>@user.Id</td>
                 <td>@user.Email</td>
                 <td>
-                    <form method="post" action="UnbanUser" onsubmit="return confirm('Are you sure you want to unban this email?');">
-                        <input type="hidden" name="emailId" value="@user.Id" />
-                        <button type="submit">Unban</button>
-                    </form>
+                    <button class="btn btn-success btn-sm" onclick="unbanUser(@user.UserId)">
+                        <i class="fas fa-unlock me-1"></i>Unban
+                    </button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+async function unbanUser(userId) {
+    if (!confirm('Are you sure you want to unban this user?')) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/Admin/UnbanUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            },
+            body: JSON.stringify({ userId: userId })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('User unbanned successfully!');
+            location.reload();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while unbanning the user.');
+    }
+}
+</script>

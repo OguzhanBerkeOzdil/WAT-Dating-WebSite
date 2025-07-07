@@ -22,10 +22,10 @@ namespace webappproject.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        T GetById(int id);
+        T? GetById(int id);
 
 
-        A GetSingle<A>(Func<A, bool> metot) where A : class;
+        A? GetSingle<A>(Func<A, bool> metot) where A : class;
 
         /// <summary>
         /// Veri tabanına kayıt ekler.

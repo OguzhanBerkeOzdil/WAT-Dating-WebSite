@@ -1,40 +1,184 @@
 ﻿@model webappproject.MVVM.ChangeAgeRange
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Age Preferences - LoveConnect";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="age-range-container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white text-center py-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-birthday-cake me-2"></i>
+                            Age Preferences
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Set your preferred age range for matches</p>
+                    </div>
+                    
+                    <div class="card-body p-5">
 
-    <div class="form-horizontal">
-        <h2>Prefered Age</h2>
-        <h3 style="color:red;">@TempData["error"]</h3>
-        <hr />
+                @if (TempData["error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        @TempData["error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SliderValue1, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SliderValue1, new { htmlAttributes = new { @class = "form-control", @type="number", @step="18" } })
-                @Html.ValidationMessageFor(model => model.SliderValue1, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                @using (Html.BeginForm("AgeRange", "MyAccount", FormMethod.Post, new { @class = "age-range-form", @id = "ageRangeForm" }))
+                {
+                    @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SliderValue2, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SliderValue2, new { htmlAttributes = new { @class = "form-control", @type="number", @step="1" } })
-                @Html.ValidationMessageFor(model => model.SliderValue2, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold mb-3">
+                            <i class="fas fa-sliders-h text-primary me-2"></i>Age Range Preference
+                        </label>
+                        
+                        <div class="age-display mb-4">
+                            <div class="row text-center">
+                                <div class="col">
+                                    <div class="age-value">
+                                        <div class="age-label small text-muted">From</div>
+                                        <div id="minAgeDisplay" class="age-number h4 text-primary">@(Model?.SliderValue1 ?? 18)</div>
+                                        <div class="age-unit small text-muted">years old</div>
+                                    </div>
+                                </div>
+                                <div class="col-auto d-flex align-items-center">
+                                    <div class="age-separator h5 text-muted">—</div>
+                                </div>
+                                <div class="col">
+                                    <div class="age-value">
+                                        <div class="age-label small text-muted">To</div>
+                                        <div id="maxAgeDisplay" class="age-number h4 text-primary">@(Model?.SliderValue2 ?? 35)</div>
+                                        <div class="age-unit small text-muted">years old</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                        <div class="dual-range-container mb-4">
+                            <div class="range-track"></div>
+                            <input type="range" id="minAge" name="SliderValue1" min="18" max="65" value="@(Model?.SliderValue1 ?? 18)" class="range-input range-min form-range">
+                            <input type="range" id="maxAge" name="SliderValue2" min="18" max="65" value="@(Model?.SliderValue2 ?? 35)" class="range-input range-max form-range">
+                        </div>
+
+                        <div class="age-labels d-flex justify-content-between small text-muted mb-4">
+                            <span>18</span>
+                            <span>25</span>
+                            <span>35</span>
+                            <span>45</span>
+                            <span>55</span>
+                            <span>65+</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-text small text-muted">
+                            <i class="fas fa-info-circle me-1"></i>This helps us show you profiles within your preferred age range.
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save me-2"></i>Save Preferences
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="@Url.Action("Index", "MyAccount")" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Profile
+                        </a>
+                    </div>
+                }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
+</div>
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const minAge = document.getElementById('minAge');
+            const maxAge = document.getElementById('maxAge');
+            const minAgeDisplay = document.getElementById('minAgeDisplay');
+            const maxAgeDisplay = document.getElementById('maxAgeDisplay');
+
+            function updateDisplay() {
+                const minVal = parseInt(minAge.value);
+                const maxVal = parseInt(maxAge.value);
+                
+                // Ensure min is always less than max
+                if (minVal >= maxVal) {
+                    if (this === minAge) {
+                        maxAge.value = minVal + 1;
+                    } else {
+                        minAge.value = maxVal - 1;
+                    }
+                }
+                
+                minAgeDisplay.textContent = minAge.value;
+                maxAgeDisplay.textContent = maxAge.value;
+                
+                // Update range track visual
+                updateRangeTrack();
+            }
+
+            function updateRangeTrack() {
+                const minVal = parseInt(minAge.value);
+                const maxVal = parseInt(maxAge.value);
+                const minPercent = ((minVal - 18) / (65 - 18)) * 100;
+                const maxPercent = ((maxVal - 18) / (65 - 18)) * 100;
+                
+                const rangeTrack = document.querySelector('.range-track');
+                if (rangeTrack) {
+                    rangeTrack.style.background = `linear-gradient(to right, 
+                        rgba(255, 107, 157, 0.2) 0%, 
+                        rgba(255, 107, 157, 0.2) ${minPercent}%, 
+                        var(--love-pink) ${minPercent}%, 
+                        var(--love-pink) ${maxPercent}%, 
+                        rgba(255, 107, 157, 0.2) ${maxPercent}%, 
+                        rgba(255, 107, 157, 0.2) 100%)`;
+                }
+            }
+
+            minAge.addEventListener('input', updateDisplay);
+            maxAge.addEventListener('input', updateDisplay);
+            
+            // Initial setup
+            updateDisplay();
+        });
+    </script>
+}
+            const minAgeDisplay = document.getElementById('minAgeDisplay');
+            const maxAgeDisplay = document.getElementById('maxAgeDisplay');
+
+            function updateDisplay() {
+                const minVal = parseInt(minAge.value);
+                const maxVal = parseInt(maxAge.value);
+                
+                if (minVal >= maxVal) {
+                    if (minAge === document.activeElement) {
+                        maxAge.value = minVal + 1;
+                    } else {
+                        minAge.value = maxVal - 1;
+                    }
+                }
+                
+                minAgeDisplay.textContent = minAge.value;
+                maxAgeDisplay.textContent = maxAge.value;
+            }
+
+            minAge.addEventListener('input', updateDisplay);
+            maxAge.addEventListener('input', updateDisplay);
+            
+            // Initialize display
+            updateDisplay();
+        });
+    </script>
+}

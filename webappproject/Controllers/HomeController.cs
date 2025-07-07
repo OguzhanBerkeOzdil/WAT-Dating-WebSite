@@ -11,17 +11,22 @@ namespace webappproject.Controllers
 {
     public class HomeController : Controller
     {
-        UserService _userService = new UserService();
-
+        private readonly UserService _userService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserService userService)
         {
             _logger = logger;
+            _userService = userService;
         }
 
         public IActionResult Index()
         {
+            // Admin kullanıcısı ana sayfaya gelirse direkt dashboard'a yönlendir
+            if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Admin");
+            }
     
             return View();
         }
@@ -33,6 +38,26 @@ namespace webappproject.Controllers
         }
 
         public IActionResult FaqPage() 
+        {
+            return View();
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult HelpCenter()
+        {
+            return View();
+        }
+
+        public IActionResult PrivacyPolicy()
+        {
+            return View();
+        }
+
+        public IActionResult TermsOfService()
         {
             return View();
         }

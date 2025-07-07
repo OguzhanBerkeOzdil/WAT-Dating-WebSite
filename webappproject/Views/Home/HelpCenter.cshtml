@@ -1,0 +1,279 @@
+@{
+    ViewData["Title"] = "Help Center";
+}
+
+<div class="hero-section" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 100px 0; color: white; text-align: center;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Help Center</h1>
+        <p class="lead mb-0">We're here to help you make the most of LoveConnect</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="search-box text-center mb-5">
+                <h3 class="mb-4">Search for help</h3>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" placeholder="What can we help you with?" id="helpSearch">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center fw-bold mb-5">Popular Topics</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="help-topic-card">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                                <h5 class="card-title fw-bold">Getting Started</h5>
+                                <p class="card-text">Learn how to create your profile and start connecting with others.</p>
+                                <a href="#getting-started" class="btn btn-outline-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="help-topic-card">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                                <h5 class="card-title fw-bold">Safety & Privacy</h5>
+                                <p class="card-text">Understand our safety features and privacy controls.</p>
+                                <a href="#safety" class="btn btn-outline-success">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="help-topic-card">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                                <h5 class="card-title fw-bold">Matching & Messaging</h5>
+                                <p class="card-text">Tips for better matches and meaningful conversations.</p>
+                                <a href="#matching" class="btn btn-outline-danger">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4" id="getting-started">Getting Started</h2>
+            <div class="accordion" id="gettingStartedAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                            How do I create my profile?
+                        </button>
+                    </h3>
+                    <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#gettingStartedAccordion">
+                        <div class="accordion-body">
+                            <p>Creating your profile is easy! Follow these steps:</p>
+                            <ol>
+                                <li>Click "Register" on the homepage</li>
+                                <li>Fill in your basic information (name, email, age)</li>
+                                <li>Add photos that represent you</li>
+                                <li>Write an engaging bio</li>
+                                <li>Set your preferences</li>
+                            </ol>
+                            <p>Remember to be authentic and honest in your profile!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                            How do I add photos?
+                        </button>
+                    </h3>
+                    <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#gettingStartedAccordion">
+                        <div class="accordion-body">
+                            <p>To add photos to your profile:</p>
+                            <ul>
+                                <li>Go to "My Profile" from the navigation menu</li>
+                                <li>Click on "Upload Photos" or "Manage Photos"</li>
+                                <li>Select high-quality photos that show your face clearly</li>
+                                <li>You can upload up to 6 photos</li>
+                                <li>Set your main photo as your primary image</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4" id="safety">Safety & Privacy</h2>
+            <div class="accordion" id="safetyAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#safety1">
+                            How do you protect my privacy?
+                        </button>
+                    </h3>
+                    <div id="safety1" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                        <div class="accordion-body">
+                            <p>We take your privacy seriously:</p>
+                            <ul>
+                                <li>Your personal information is encrypted and secure</li>
+                                <li>We never share your data with third parties without consent</li>
+                                <li>You control who can see your profile</li>
+                                <li>You can block or report users anytime</li>
+                                <li>All messages are private and secure</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#safety2">
+                            How do I report someone?
+                        </button>
+                    </h3>
+                    <div id="safety2" class="accordion-collapse collapse" data-bs-parent="#safetyAccordion">
+                        <div class="accordion-body">
+                            <p>If you encounter inappropriate behavior:</p>
+                            <ol>
+                                <li>Click on the user's profile</li>
+                                <li>Look for the "Report" button</li>
+                                <li>Select the reason for reporting</li>
+                                <li>Provide additional details if needed</li>
+                                <li>Our team will review within 24 hours</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4" id="matching">Matching & Messaging</h2>
+            <div class="accordion" id="matchingAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#matching1">
+                            How does matching work?
+                        </button>
+                    </h3>
+                    <div id="matching1" class="accordion-collapse collapse" data-bs-parent="#matchingAccordion">
+                        <div class="accordion-body">
+                            <p>Our matching system uses:</p>
+                            <ul>
+                                <li>Your location preferences</li>
+                                <li>Age range settings</li>
+                                <li>Shared interests and hobbies</li>
+                                <li>Compatibility factors</li>
+                                <li>Activity patterns</li>
+                            </ul>
+                            <p>Update your preferences in "My Profile" to get better matches!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#matching2">
+                            Tips for better conversations?
+                        </button>
+                    </h3>
+                    <div id="matching2" class="accordion-collapse collapse" data-bs-parent="#matchingAccordion">
+                        <div class="accordion-body">
+                            <p>Start great conversations with these tips:</p>
+                            <ul>
+                                <li>Read their profile carefully</li>
+                                <li>Ask about their interests</li>
+                                <li>Be genuine and authentic</li>
+                                <li>Avoid generic pickup lines</li>
+                                <li>Ask open-ended questions</li>
+                                <li>Share something about yourself</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="contact-support p-5 bg-light rounded">
+                <h3 class="fw-bold mb-3">Still need help?</h3>
+                <p class="lead mb-4">Our support team is here to assist you 24/7</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-3">
+                        <a href="@Url.Action("Contact", "Home")" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-envelope"></i> Contact Support
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="@Url.Action("FaqPage", "Home")" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fas fa-question-circle"></i> View FAQ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.help-topic-card .card {
+    transition: transform 0.3s ease;
+}
+
+.help-topic-card .card:hover {
+    transform: translateY(-5px);
+}
+
+.search-box .input-group {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.accordion-button {
+    font-weight: 500;
+}
+
+.contact-support {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+}
+</style>
+
+<script>
+document.getElementById('helpSearch').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        const searchTerm = this.value.toLowerCase();
+        const accordions = document.querySelectorAll('.accordion-button');
+        
+        accordions.forEach(button => {
+            const text = button.textContent.toLowerCase();
+            const accordion = button.closest('.accordion-item');
+            
+            if (text.includes(searchTerm)) {
+                accordion.style.display = 'block';
+                button.click();
+            } else if (searchTerm === '') {
+                accordion.style.display = 'block';
+            } else {
+                accordion.style.display = 'none';
+            }
+        });
+    }
+});
+</script>

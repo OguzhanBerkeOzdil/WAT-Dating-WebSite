@@ -1,82 +1,231 @@
 ﻿@model webappproject.Models.User
 
 @{
-    ViewBag.Title = "Index";
+    ViewData["Title"] = "Join LoveConnect - Create Your Account";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="register-page-container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white text-center py-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Join LoveConnect
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Create your account and start your journey to find love</p>
+                    </div>
+                    
+                    <div class="card-body p-5">
 
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h2>Register Page</h2>
-        <h3 style="color:red;">@TempData["error"]</h3>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        @if (TempData["error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                @TempData["error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        </div>
+        }
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+        @using (Html.BeginForm("Index", "Register", FormMethod.Post, new { @class = "register-form", @id = "registerForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="Name" class="form-label fw-semibold">
+                        <i class="fas fa-user text-primary me-2"></i>First Name
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-signature"></i>
+                        </span>
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = "Enter your first name", @autocomplete = "given-name" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger small mt-1" })
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label for="Surname" class="form-label fw-semibold">
+                        <i class="fas fa-user text-secondary me-2"></i>Last Name
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-signature"></i>
+                        </span>
+                        @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control form-control-lg", @placeholder = "Enter your last name", @autocomplete = "family-name" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger small mt-1" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control", @type="number", @step="1" } })
-                @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="Age" class="form-label fw-semibold">
+                        <i class="fas fa-calendar-alt text-info me-2"></i>Age
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-hashtag"></i>
+                        </span>
+                        @Html.EditorFor(model => model.Age, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "number", @min = "18", @max = "100", @placeholder = "Enter your age", @autocomplete = "age" } })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger small mt-1" })
+                </div>
+                <div class="col-md-6 mb-4">
+                    <label for="Gender" class="form-label fw-semibold">
+                        <i class="fas fa-venus-mars text-success me-2"></i>Gender
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        @Html.DropDownListFor(model => model.Gender, new SelectList(new[]
+                        {
+                            new SelectListItem { Text = "👩 Female", Value = "Female" },
+                            new SelectListItem { Text = "👨 Male", Value = "Male" },
+                            new SelectListItem { Text = "🌈 Other", Value = "Other" }
+                        }, "Value", "Text"), "Select your gender", new { @class = "form-control form-control-lg" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger small mt-1" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Gender, new SelectList(new[]
-            {
-            new SelectListItem { Text = "Female", Value = "Female" },
-            new SelectListItem { Text = "Male", Value = "Male" },
-            }, "Value", "Text"), "Select an option", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+            <div class="mb-4">
+                <label for="Email" class="form-label fw-semibold">
+                    <i class="fas fa-envelope text-primary me-2"></i>Email Address
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-at"></i>
+                    </span>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "email", @placeholder = "Enter your email address", @autocomplete = "email" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small mt-1" })
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control",@type= "email" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div class="mb-4">
+                <label for="Password" class="form-label fw-semibold">
+                    <i class="fas fa-lock text-warning me-2"></i>Password
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-key"></i>
+                    </span>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-lg", @type = "password", @placeholder = "Create a secure password", @autocomplete = "new-password", @minlength = "6" } })
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small mt-1" })
+                <div class="form-text small mt-1 text-muted">
+                    <i class="fas fa-info-circle me-1"></i>Password must be at least 6 characters long
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type="password" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <div class="mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                    <label class="form-check-label" for="termsCheck">
+                        I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and 
+                        <a href="#" class="text-decoration-none">Privacy Policy</a>
+                    </label>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-heart me-2"></i>Create My Account
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p class="mb-0">Already have an account? 
+                    <a href="@Url.Action("Index", "Login")" class="text-decoration-none">
+                        Sign In <i class="fas fa-arrow-right"></i>
+                    </a>
+                </p>
+            </div>
+        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
+</div>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<script>
+// Password toggle functionality
+document.getElementById('togglePassword')?.addEventListener('click', function() {
+    const password = document.getElementById('Password');
+    const icon = this.querySelector('i');
+    
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+</script>
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Age validation
+        document.querySelector('input[name="Age"]').addEventListener('input', function(e) {
+            var age = parseInt(e.target.value);
+            if (age < 18) {
+                e.target.setCustomValidity('You must be at least 18 years old to join LoveConnect');
+            } else if (age > 100) {
+                e.target.setCustomValidity('Please enter a valid age');
+            } else {
+                e.target.setCustomValidity('');
+            }
+        });
+
+        // Password strength indicator
+        document.querySelector('input[name="Password"]').addEventListener('input', function(e) {
+            var password = e.target.value;
+            var strength = 0;
+            
+            if (password.length >= 6) strength++;
+            if (password.match(/[a-z]/)) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            var strengthText = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            var strengthColors = ['#ff4757', '#ff6b6b', '#ffa726', '#26de81', '#2ed573'];
+            
+            if (password.length > 0) {
+                if (!document.querySelector('.password-strength')) {
+                    var strengthDiv = document.createElement('div');
+                    strengthDiv.className = 'password-strength mt-2';
+                    e.target.parentNode.appendChild(strengthDiv);
+                }
+                
+                var strengthIndicator = document.querySelector('.password-strength');
+                strengthIndicator.innerHTML = `
+                    <small style="color: ${strengthColors[strength-1] || '#ff4757'}">
+                        <i class="fas fa-shield-alt"></i> Password Strength: ${strengthText[strength-1] || 'Very Weak'}
+                    </small>
+                `;
+            }
+        });
+    </script>
+}
+        </div>
+    </div>
 </div>

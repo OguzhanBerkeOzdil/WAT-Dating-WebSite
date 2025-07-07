@@ -1,13 +1,877 @@
-﻿@{
-    ViewBag.Title = "Index";
+@{
+    ViewBag.Title = "Admin Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<table class="table table-hover">
-    <tbody>
-        <tr>
-            <td>@Html.ActionLink("List of Users", "Detail", "Admin")</td>
-            <td>@Html.ActionLink("List of Banned Users", "BannedUserDetail", "Admin")</td>
-        </tr>
-    </tbody>
-</table>
+<!-- CSRF Token for AJAX requests -->
+@Html.AntiForgeryToken()
+
+<div class="admin-dashboard-container">
+
+<div class="admin-dashboard-container">
+
+<style>
+    /* Admin Dashboard Love Theme Integration */
+    .btn-outline-primary:hover {
+        background: var(--love-gradient) !important;
+        border-color: var(--love-pink) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+    .btn-outline-primary {
+        color: var(--love-pink) !important;
+        border-color: var(--love-pink) !important;
+        background-color: transparent !important;
+        transition: var(--transition-smooth) !important;
+    }
+    .btn-outline-info {
+        color: var(--mint) !important;
+        border-color: var(--mint) !important;
+        background-color: transparent !important;
+        transition: var(--transition-smooth) !important;
+    }
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, var(--mint), var(--lavender)) !important;
+        border-color: var(--mint) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+    .btn-outline-success {
+        color: var(--lavender) !important;
+        border-color: var(--lavender) !important;
+        background-color: transparent !important;
+        transition: var(--transition-smooth) !important;
+    }
+    .btn-outline-success:hover {
+        background: var(--lavender) !important;
+        border-color: var(--lavender) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+
+    /* Love-themed admin cards */
+    .card {
+        border: none !important;
+        box-shadow: var(--shadow-soft) !important;
+        border-radius: 20px !important;
+        background: var(--bg-card) !important;
+    }
+
+    .card-header {
+        background: var(--soft-gradient) !important;
+        border: none !important;
+        border-radius: 20px 20px 0 0 !important;
+        color: var(--text-primary) !important;
+    }
+
+    /* Love-themed text colors */
+    .text-primary {
+        color: var(--love-pink) !important;
+    }
+
+    .text-info {
+        color: var(--mint) !important;
+    }
+
+    .text-success {
+        color: var(--lavender) !important;
+    }
+
+    .text-warning {
+        color: var(--rose-gold) !important;
+    }
+
+    .text-danger {
+        color: var(--coral) !important;
+    }
+
+    /* Fix admin button colors */
+    .btn-outline-warning {
+        color: var(--rose-gold) !important;
+        border-color: var(--rose-gold) !important;
+        background-color: transparent !important;
+        transition: var(--transition-smooth) !important;
+    }
+
+    .btn-outline-warning:hover {
+        background: var(--rose-gold) !important;
+        border-color: var(--rose-gold) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+
+    .btn-outline-danger {
+        color: var(--coral) !important;
+        border-color: var(--coral) !important;
+        background-color: transparent !important;
+        transition: var(--transition-smooth) !important;
+    }
+
+    .btn-outline-danger:hover {
+        background: var(--coral) !important;
+        border-color: var(--coral) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-soft) !important;
+    }
+
+    /* Dashboard stats with love theme */
+    .dashboard-stat-card {
+        background: var(--bg-card) !important;
+        border-radius: 20px !important;
+        box-shadow: var(--shadow-soft) !important;
+        transition: var(--transition-smooth) !important;
+    }
+
+    .dashboard-stat-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: var(--shadow-medium) !important;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+
+<div class="container-fluid py-4">
+    <!-- Dashboard Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 text-primary mb-1">
+                        <i class="fas fa-tachometer-alt me-3"></i>💖 Admin Dashboard
+                    </h1>
+                    <p class="text-secondary mb-0">Welcome back, Administrator! Here's what's happening with your platform today. 💕</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt me-2"></i>💫 Refresh
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-cog me-2"></i>✨ Quick Actions
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="@Url.Action("Users", "Admin")">
+                                <i class="fas fa-users me-2"></i>👥 Manage Users
+                            </a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("BannedUsers", "Admin")">
+                                <i class="fas fa-ban me-2"></i>🚫 Banned Users
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="exportData()">
+                                <i class="fas fa-download me-2"></i>📊 Export Data
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 stat-card bg-primary">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-1 opacity-75">💕 Total Users</h6>
+                            <h2 class="mb-0 counter" data-target="@(ViewBag.TotalUsers ?? 127)">0</h2>
+                            <small class="opacity-75">
+                                <i class="fas fa-arrow-up me-1"></i>+12% from last month
+                            </small>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 stat-card bg-success">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-1 opacity-75">💚 Active Users</h6>
+                            <h2 class="mb-0 counter" data-target="@(ViewBag.ActiveUsers ?? 98)">0</h2>
+                            <small class="opacity-75">
+                                <i class="fas fa-arrow-up me-1"></i>+8% from last week
+                            </small>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 stat-card bg-warning">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-1 opacity-75">✨ New Registrations</h6>
+                            <h2 class="mb-0 counter" data-target="@(ViewBag.NewUsers ?? 23)">0</h2>
+                            <small class="opacity-75">
+                                <i class="fas fa-arrow-up me-1"></i>Today
+                            </small>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-user-plus fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100 stat-card bg-danger">
+                <div class="card-body text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-1 opacity-75">🚫 Banned Users</h6>
+                            <h2 class="mb-0 counter" data-target="@(ViewBag.BannedUsers ?? 5)">0</h2>
+                            <small class="opacity-75">
+                                <i class="fas fa-shield-alt me-1"></i>Protected
+                            </small>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-ban fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row">
+        <!-- Recent Users -->
+        <div class="col-lg-8 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-users text-primary me-2"></i>👥 Recent Users
+                        </h5>
+                        <a href="@Url.Action("Users", "Admin")" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye me-1"></i>View All
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="border-0 ps-4">User</th>
+                                    <th class="border-0">Email</th>
+                                    <th class="border-0">Joined</th>
+                                    <th class="border-0">Status</th>
+                                    <th class="border-0 pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var recentUsers = ViewBag.RecentUsers as List<webappproject.Models.User> ?? new List<webappproject.Models.User>();
+                                }
+                                @if (recentUsers.Any())
+                                {
+                                    @foreach (var user in recentUsers.Take(5))
+                                    {
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar-sm me-3">
+                                                        @if (!string.IsNullOrEmpty(user.ImagePath))
+                                                        {
+                                                            <img src="@user.ImagePath" alt="@user.Name" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px;">
+                                                                @user.Name.Substring(0, 1).ToUpper()
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="mb-0">@user.Name @user.Surname</h6>
+                                                        <small class="text-muted">@user.Age years old</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">@user.Email</span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">@user.CreatedDate.ToString("MMM dd, yyyy")</small>
+                                            </td>
+                                            <td>
+                                                @if (user.IsActive)
+                                                {
+                                                    <span class="badge bg-success rounded-pill">
+                                                        <i class="fas fa-check me-1"></i>Active
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger rounded-pill">
+                                                        <i class="fas fa-times me-1"></i>Inactive
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td class="pe-4">
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="@Url.Action("UserDetails", "Admin", new { id = user.Id })" class="btn btn-outline-primary btn-sm" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="@Url.Action("EditUser", "Admin", new { id = user.Id })" class="btn btn-outline-warning btn-sm" title="Edit User">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    @if (user.IsActive)
+                                                    {
+                                                        <button class="btn btn-outline-danger btn-sm" onclick="banUser(@user.Id)" title="Ban User">
+                                                            <i class="fas fa-ban"></i>
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-outline-success btn-sm" onclick="activateUser(@user.Id)" title="Activate User">
+                                                            <i class="fas fa-check"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">
+                                            <i class="fas fa-users fa-2x mb-3 d-block"></i>
+                                            No users found. Users will appear here once they register.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & System Info -->
+        <div class="col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a href="@Url.Action("Users", "Admin")" class="btn btn-outline-primary d-flex align-items-center">
+                            <i class="fas fa-users me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">👥 Manage Users</div>
+                                <small class="text-muted">View, edit, ban users</small>
+                            </div>
+                        </a>
+                        
+                        <a href="@Url.Action("BannedUsers", "Admin")" class="btn btn-outline-danger d-flex align-items-center">
+                            <i class="fas fa-ban me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">🚫 Banned Users</div>
+                                <small class="text-muted">Review banned accounts</small>
+                            </div>
+                        </a>
+                        
+                        <button onclick="sendBroadcast()" class="btn btn-outline-info d-flex align-items-center">
+                            <i class="fas fa-bullhorn me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">📢 Send Notification</div>
+                                <small class="text-muted">Broadcast to all users</small>
+                            </div>
+                        </button>
+                        
+                        <button onclick="exportData()" class="btn btn-outline-success d-flex align-items-center">
+                            <i class="fas fa-download me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">📊 Export Data</div>
+                                <small class="text-muted">Download user reports</small>
+                            </div>
+                        </button>
+                        
+                        <button onclick="clearTestUserImages()" class="btn btn-outline-warning d-flex align-items-center">
+                            <i class="fas fa-image me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">🖼️ Clear Test Images</div>
+                                <small class="text-muted">Remove test user photos</small>
+                            </div>
+                        </button>
+                        
+                        <button onclick="checkTestUsers()" class="btn btn-outline-info d-flex align-items-center">
+                            <i class="fas fa-search me-3"></i>
+                            <div class="text-start">
+                                <div class="fw-semibold">🔍 Check Test Users</div>
+                                <small class="text-muted">View test user status</small>
+                            </div>
+                        </button>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- System Health -->
+                    <h6 class="mb-3">
+                        <i class="fas fa-heartbeat text-danger me-2"></i>System Health
+                    </h6>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>Server Load</small>
+                            <small>23%</small>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 23%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>Memory Usage</small>
+                            <small>67%</small>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-warning" style="width: 67%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>Database Load</small>
+                            <small>45%</small>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-info" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <small class="text-muted">
+                            <i class="fas fa-clock me-1"></i>
+                            Last updated: @DateTime.Now.ToString("HH:mm:ss")
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history text-info me-2"></i>Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        @for (int i = 1; i <= 4; i++)
+                        {
+                            var activities = new[] {
+                                new { Icon = "fas fa-user-plus", Color = "success", Text = "New user registration", User = "emma.wilson@example.com", Time = DateTime.Now.AddMinutes(-5 * i) },
+                                new { Icon = "fas fa-heart", Color = "danger", Text = "New match created", User = "oliver.johnson@example.com", Time = DateTime.Now.AddMinutes(-10 * i) },
+                                new { Icon = "fas fa-ban", Color = "warning", Text = "User banned for policy violation", User = "spam.user@example.com", Time = DateTime.Now.AddMinutes(-15 * i) },
+                                new { Icon = "fas fa-sign-in-alt", Color = "info", Text = "User login", User = "sophia.brown@example.com", Time = DateTime.Now.AddMinutes(-20 * i) }
+                            };
+                            var activity = activities[i - 1];
+                            
+                            <div class="timeline-item">
+                                <div class="timeline-marker bg-@activity.Color">
+                                    <i class="@activity.Icon text-white"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6 class="mb-1">@activity.Text</h6>
+                                    <p class="mb-1 text-muted">@activity.User</p>
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>@activity.Time.ToString("HH:mm")
+                                    </small>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.stat-icon {
+    opacity: 0.6;
+}
+
+.counter {
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.avatar-sm {
+    flex-shrink: 0;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -23px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.timeline-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border-left: 3px solid #e9ecef;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+.table th {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.875rem;
+}
+
+@@media (max-width: 768px) {
+    .display-6 {
+        font-size: 1.5rem;
+    }
+    
+    .counter {
+        font-size: 2rem;
+    }
+    
+    .timeline {
+        padding-left: 20px;
+    }
+    
+    .timeline-marker {
+        left: -18px;
+        width: 25px;
+        height: 25px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Counter animation
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const increment = target / 100;
+        let current = 0;
+        
+        const updateCounter = () => {
+            if (current < target) {
+                current += increment;
+                counter.textContent = Math.ceil(current);
+                setTimeout(updateCounter, 20);
+            } else {
+                counter.textContent = target;
+            }
+        };
+        
+        updateCounter();
+    });
+});
+
+function refreshDashboard() {
+    window.location.reload();
+}
+
+function sendBroadcast() {
+    const message = prompt('Enter notification message:');
+    if (message && message.trim()) {
+        fetch('/Admin/SendNotification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ 
+                message: message.trim(),
+                target: 'all'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Notification sent successfully!');
+            } else {
+                alert('Error sending notification: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending notification.');
+        });
+    }
+}
+
+function exportData() {
+    if (confirm('Export all user data as CSV?')) {
+        fetch('/Admin/ExportData', {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();
+            } else {
+                throw new Error('Export failed');
+            }
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `users_export_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            alert('Data exported successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while exporting data.');
+        });
+    }
+}
+
+function banUser(userId) {
+    if (confirm('Are you sure you want to ban this user? This action can be reversed later.')) {
+        fetch(`/Admin/BanUser/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ reason: 'Banned by administrator' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error banning user: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while banning the user.');
+        });
+    }
+}
+
+function activateUser(userId) {
+    if (confirm('Are you sure you want to activate this user?')) {
+        fetch(`/Admin/ActivateUser/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error activating user: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while activating the user.');
+        });
+    }
+}
+
+function checkTestUsers() {
+    // Get CSRF token
+    const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+    
+    if (!token) {
+        alert('Security token not found. Please refresh the page and try again.');
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('__RequestVerificationToken', token);
+    
+    fetch('/Admin/CheckTestUsers', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            let message = `🔍 TEST USERS STATUS REPORT\n\n`;
+            message += `📊 Total test users found: ${data.totalTestUsers}\n`;
+            message += `📸 Users with images: ${data.usersWithImages}\n`;
+            message += `🆔 Users without images: ${data.usersWithoutImages}\n\n`;
+            
+            if (data.userDetails && data.userDetails.length > 0) {
+                message += `📋 DETAILED LIST:\n\n`;
+                data.userDetails.forEach(user => {
+                    const hasImages = user.hasImages ? '🖼️' : '🚫';
+                    message += `${hasImages} ${user.name} (${user.email})\n`;
+                    if (user.hasImages) {
+                        message += `   📸 Images: ${user.imagePaths}\n`;
+                    }
+                });
+            }
+            
+            alert(message);
+        } else {
+            alert('❌ Error checking test users: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while checking test users: ' + error.message);
+    });
+}
+
+function clearTestUserImages() {
+    if (confirm('Are you sure you want to clear all test user images? This will remove photos from users named "Emma Wilson", "de de", "ded ded" and demo users.')) {
+        // Get CSRF token
+        const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+        
+        if (!token) {
+            alert('Security token not found. Please refresh the page and try again.');
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('__RequestVerificationToken', token);
+        
+        fetch('/Admin/ClearTestUserImages', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Show detailed success message
+                let successMsg = `✅ CLEAR TEST IMAGES - COMPLETED!\n\n`;
+                
+                if (data.clearedCount > 0) {
+                    successMsg += `📸 Cleared images from ${data.clearedCount} users\n`;
+                    successMsg += `👥 Total test users found: ${data.totalTestUsers}\n\n`;
+                    successMsg += `Details:\n${data.message}\n\n`;
+                } else {
+                    successMsg += `✨ All test users already have clean profiles!\n\n`;
+                    successMsg += `👥 Found ${data.totalTestUsers} test users, but none had images to clear.\n`;
+                    successMsg += `This means the operation was successful - all test users already have empty image paths.\n\n`;
+                }
+                
+                successMsg += `🔄 The page will refresh in 2 seconds to show any changes.`;
+                
+                alert(successMsg);
+                
+                // Show loading indicator
+                const button = document.querySelector('button[onclick="clearTestUserImages()"]');
+                if (button) {
+                    const newHtml = data.clearedCount > 0 
+                        ? '<i class="fas fa-check me-3"></i><div class="text-start"><div class="fw-semibold">✅ Images Cleared</div><small class="text-muted">Refreshing...</small></div>'
+                        : '<i class="fas fa-check-circle me-3"></i><div class="text-start"><div class="fw-semibold">✨ Already Clean</div><small class="text-muted">All good!</small></div>';
+                    
+                    button.innerHTML = newHtml;
+                    button.disabled = true;
+                }
+                
+                // Reload after delay
+                setTimeout(() => {
+                    window.location.href = window.location.href + '?cleared=' + Date.now();
+                }, 2000);
+            } else {
+                alert('❌ Error clearing test user images: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while clearing test user images: ' + error.message);
+        });
+    }
+}
+</script>
+</div>

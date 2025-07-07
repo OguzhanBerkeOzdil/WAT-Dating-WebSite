@@ -1,0 +1,364 @@
+@model List<webappproject.Models.User>
+
+@{
+    ViewData["Title"] = "Your Matches - LoveConnect";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="matches-container">
+    <!-- Matches Header -->
+    <div class="matches-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="matches-title">
+                                <i class="fas fa-heart"></i> Your Matches
+                            </h1>
+                            <p class="matches-subtitle">People who liked you back! 💕</p>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("RandomProfiles", "User")" class="btn btn-outline-primary">
+                                <i class="fas fa-search"></i> Discover More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        @if (Model != null && Model.Count > 0)
+        {
+            <!-- Matches Grid -->
+            <div class="matches-grid">
+                @foreach (var match in Model)
+                {
+                    <div class="match-card">
+                        <div class="match-image-container">
+                            <img src="@match.ImagePath" alt="@match.Name" class="match-image" 
+                                 onerror="this.src='https://via.placeholder.com/300x400/667eea/ffffff?text=@match.Name.Substring(0,1)'">
+                            <div class="match-badge">
+                                <i class="fas fa-heart"></i> Match!
+                            </div>
+                            <div class="match-online-status online"></div>
+                        </div>
+                        <div class="match-info">
+                            <h4 class="match-name">@match.Name @match.Surname</h4>
+                            <p class="match-age">
+                                <i class="fas fa-birthday-cake"></i> @match.Age years old
+                            </p>
+                            @if (!string.IsNullOrEmpty(match.Biography))
+                            {
+                                <p class="match-bio">
+                                    @(match.Biography.Length > 60 ? match.Biography.Substring(0, 60) + "..." : match.Biography)
+                                </p>
+                            }
+                            <div class="match-interests">
+                                @if (!string.IsNullOrEmpty(match.Tag1))
+                                {
+                                    <span class="interest-tag">@match.Tag1</span>
+                                }
+                                @if (!string.IsNullOrEmpty(match.Tag2))
+                                {
+                                    <span class="interest-tag">@match.Tag2</span>
+                                }
+                            </div>
+                            <div class="match-actions">
+                                <button class="btn btn-primary" onclick="sendMessage(@match.Id)">
+                                    <i class="fas fa-comment"></i> Message
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="viewProfile(@match.Id)">
+                                    <i class="fas fa-eye"></i> View Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- No Matches State -->
+            <div class="no-matches-container">
+                <div class="no-matches-content">
+                    <div class="no-matches-icon">
+                        💔
+                    </div>
+                    <h3>No matches yet</h3>
+                    <p>Don't worry! Keep swiping and your perfect match will appear soon.</p>
+                    <a href="@Url.Action("RandomProfiles", "User")" class="btn btn-gradient btn-lg">
+                        <i class="fas fa-fire"></i> Start Discovering
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function sendMessage(userId) {
+            alert(`Messaging feature will be available soon! User ID: ${userId}`);
+        }
+
+        function viewProfile(userId) {
+            alert(`Profile viewing feature will be available soon! User ID: ${userId}`);
+        }
+
+        // Add some animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.match-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+}
+
+<style>
+.matches-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding-bottom: 2rem;
+}
+
+.matches-header {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+.matches-title {
+    color: white;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.matches-subtitle {
+    color: white;
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.match-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    position: relative;
+}
+
+.match-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+
+.match-image-container {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.match-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.match-card:hover .match-image {
+    transform: scale(1.05);
+}
+
+.match-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.match-online-status {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.match-online-status.online {
+    background: #2ecc71;
+}
+
+.match-info {
+    padding: 1.5rem;
+}
+
+.match-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.match-age {
+    color: #718096;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.match-bio {
+    color: #4a5568;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.match-interests {
+    margin-bottom: 1.5rem;
+}
+
+.interest-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.match-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.match-actions .btn {
+    flex: 1;
+    border-radius: 12px;
+    padding: 0.75rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a419a);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.no-matches-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.no-matches-content {
+    text-align: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+
+.no-matches-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.no-matches-content h3 {
+    color: #2d3748;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.no-matches-content p {
+    color: #718096;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #5a6fd8, #6a419a);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+@@media (max-width: 768px) {
+    .matches-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .matches-title {
+        font-size: 2rem;
+    }
+    
+    .match-actions {
+        flex-direction: column;
+    }
+    
+    .no-matches-content {
+        margin: 1rem;
+        padding: 2rem;
+    }
+}
+</style>

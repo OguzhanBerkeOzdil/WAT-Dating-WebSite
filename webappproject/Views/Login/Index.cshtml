@@ -1,31 +1,141 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewData["Title"] = "Welcome Back - LoveConnect";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="/Login/Login" method="post">
-    <div class="form-horizontal">
-        <h2>Login Page</h2>
-        <h3 style="color:red;">@TempData["LoginError"]</h3>
-        <hr />
-        <div class="form-group">
-            <label class="control-label col-md-2">Email</label>
-            <div class="col-md-10">
-                <input type="email" name="email" class="form-control" />
-            </div>
-        </div>
+<div class="login-page-container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-gradient-primary text-white text-center py-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-heart me-2"></i>
+                            Welcome Back!
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">Sign in to continue your journey of finding love</p>
+                    </div>
+                    
+                    <div class="card-body p-5">
 
-        <div class="form-group">
-
-            <label class="control-label col-md-2">Password</label>
-            <div class="col-md-10">
-                <input type="password" name="password" class="form-control" />
+        @if (TempData["LoginError"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                @TempData["LoginError"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+        }
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                @TempData["success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <form action="/Login/Login" method="post" class="login-form" id="loginForm">
+            <div class="mb-4">
+                <label for="email" class="form-label fw-semibold">
+                    <i class="fas fa-envelope text-primary me-2"></i>Email Address
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-at"></i>
+                    </span>
+                    <input type="email" 
+                           name="email" 
+                           id="email"
+                           class="form-control form-control-lg" 
+                           placeholder="Enter your email address"
+                           autocomplete="email"
+                           required />
+                </div>
+                <div class="invalid-feedback">
+                    <span class="text-danger">Please provide a valid email address.</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label fw-semibold">
+                    <i class="fas fa-lock text-warning me-2"></i>Password
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-key"></i>
+                    </span>
+                    <input type="password" 
+                           name="password" 
+                           id="password"
+                           class="form-control form-control-lg" 
+                           placeholder="Enter your password"
+                           autocomplete="current-password"
+                           required />
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="invalid-feedback">
+                    <span class="text-danger">Please provide your password.</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        Remember me
+                    </label>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mb-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                </button>
+            </div>
+
+            <div class="text-center mb-3">
+                <a href="@Url.Action("ForgotPassword", "Login")" class="btn btn-outline-secondary">
+                    <i class="fas fa-key me-2"></i>Forgot your password?
+                </a>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="text-center">
+                <p class="mb-0">Don't have an account? 
+                    <a href="@Url.Action("Index", "Register")" class="text-decoration-none">
+                        Create Account <i class="fas fa-arrow-right"></i>
+                    </a>
+                </p>
+            </div>
+        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</form>
+</div>
+
+<script>
+// Password toggle functionality
+document.getElementById('togglePassword')?.addEventListener('click', function() {
+    const password = document.getElementById('password');
+    const icon = this.querySelector('i');
+    
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+</script>
+        </div>
+    </div>
+</div>

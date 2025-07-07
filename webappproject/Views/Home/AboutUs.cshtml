@@ -1,0 +1,139 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<div class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 100px 0; color: white; text-align: center;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">About LoveConnect</h1>
+        <p class="lead mb-0">Connecting hearts worldwide with modern technology</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h2 class="fw-bold mb-4">Our Story</h2>
+            <p class="lead">LoveConnect was born from a simple belief: everyone deserves to find their perfect match. We're not just another dating platform – we're a community dedicated to creating meaningful connections in the digital age.</p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-card h-100">
+                <i class="fas fa-heart fa-3x text-primary mb-3"></i>
+                <h4>Meaningful Connections</h4>
+                <p>We focus on quality over quantity, helping you find genuine relationships that last.</p>
+            </div>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-card h-100">
+                <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                <h4>Safe & Secure</h4>
+                <p>Your privacy and safety are our top priorities with advanced security measures.</p>
+            </div>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-card h-100">
+                <i class="fas fa-users fa-3x text-info mb-3"></i>
+                <h4>Global Community</h4>
+                <p>Connect with people from around the world and discover diverse cultures.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <h3 class="fw-bold mb-4 text-center">Our Mission</h3>
+                    <p class="mb-4">At LoveConnect, we believe that love knows no boundaries. Our mission is to create a platform where authentic connections flourish, where people can be themselves, and where finding your soulmate is not just a dream but a reality.</p>
+                    
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <h4 class="text-primary fw-bold">10K+</h4>
+                            <p class="mb-0">Happy Couples</p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <h4 class="text-success fw-bold">50K+</h4>
+                            <p class="mb-0">Active Users</p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <h4 class="text-info fw-bold">25+</h4>
+                            <p class="mb-0">Countries</p>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <h4 class="text-warning fw-bold">95%</h4>
+                            <p class="mb-0">Success Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="about-developer text-center">
+                <h3 class="fw-bold mb-4">Meet the Developer</h3>
+                <div class="card border-0 shadow">
+                    <div class="card-body p-4">
+                        <div class="developer-avatar mb-3">
+                            <i class="fas fa-user-circle fa-5x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold">Oğuzhan Berke Özdil</h4>
+                        <p class="text-muted mb-3">Full Stack Developer & Love Enthusiast</p>
+                        <p class="mb-4">With a passion for technology and human connections, Oğuzhan created LoveConnect to bridge the gap between modern dating and meaningful relationships. His vision is to make finding love as natural and enjoyable as it should be.</p>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/oguzhanberkeozdil/" target="_blank" class="btn btn-outline-primary btn-sm me-2">
+                                <i class="fab fa-linkedin"></i> LinkedIn
+                            </a>
+                            <a href="https://github.com/OguzhanBerkeOzdil" target="_blank" class="btn btn-outline-dark btn-sm me-2">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                            <a href="@Url.Action("Contact", "Home")" class="btn btn-outline-info btn-sm">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <h3 class="fw-bold mb-4">Ready to Find Your Match?</h3>
+            <p class="lead mb-4">Join thousands of happy couples who found love through LoveConnect</p>
+            <a asp-controller="Register" asp-action="Index" class="btn btn-primary btn-lg">
+                <i class="fas fa-heart"></i> Start Your Journey
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.feature-card {
+    padding: 2rem;
+    border-radius: 10px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.developer-avatar {
+    margin-bottom: 1rem;
+}
+
+.social-links .btn {
+    margin: 0 5px;
+}
+
+.about-developer .card {
+    border-radius: 15px;
+}
+</style>

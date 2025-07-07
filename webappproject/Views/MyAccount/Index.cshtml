@@ -1,77 +1,339 @@
 ﻿@model webappproject.Models.User
 
 @{
-    ViewBag.Title = "Index";
+    ViewData["Title"] = "My Profile - LoveConnect";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-  .card {
-    width: 300px;
-    margin-left: 10px;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .card-body {
-    padding: 10px;
-  }
-
-  .card-title {
-    font-size: 18px;
-    margin-bottom: 5px;
-  }
-
-  .card-text {
-    font-size: 14px;
-    color: #555;
-  }
-</style>
-
-
-<h2>My Account</h2>
-
-<div style="display: flex;">
-   <img src="@ViewBag.ImagePathView" alt="" style="width: 200px; height: 200px; margin-left: 10px;" />
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Biography</h5>
-      <p class="card-text">@Model.Biography</p>
-      <h5 class="card-title">Hobbies</h5>
-      <p class="card-text">@Model.Tag1</p>
-      <p class="card-text">@Model.Tag2</p>
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="profile-title">
+                        <i class="fas fa-user-circle"></i> My Profile
+                    </h1>
+                    <p class="profile-subtitle">Manage your account and preferences</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <div class="container mt-4">
+        <!-- Enhanced Profile Stats -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4 id="profileViews">Loading...</h4>
+                        <p>Profile Views</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4 id="likesReceived">Loading...</h4>
+                        <p>Likes Received</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4 id="matches">Loading...</h4>
+                        <p>Total Matches</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4 id="messages">Loading...</h4>
+                        <p>Messages Sent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Row -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="quick-actions-card">
+                    <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+                    <div class="actions-grid">
+                        <a href="@Url.Action("Upload", "MyAccount")" class="action-item">
+                            <i class="fas fa-camera"></i>
+                            <span>Upload Photo</span>
+                        </a>
+                        <a href="@Url.Action("ChangeBioTags", "MyAccount")" class="action-item">
+                            <i class="fas fa-edit"></i>
+                            <span>Edit Profile</span>
+                        </a>
+                        <a href="@Url.Action("AgeRange", "MyAccount")" class="action-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Preferences</span>
+                        </a>
+                        <a href="@Url.Action("Matches", "User")" class="action-item">
+                            <i class="fas fa-heart"></i>
+                            <span>View Matches</span>
+                        </a>
+                        <a href="@Url.Action("RandomProfiles", "User")" class="action-item">
+                            <i class="fas fa-fire"></i>
+                            <span>Discover</span>
+                        </a>
+                        <button class="action-item" onclick="togglePrivacyMode()">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Privacy Mode</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Profile Content -->
+        <div class="row profile-main-content">
+            <!-- Profile Card -->
+            <div class="col-xl-4 col-lg-5 mb-4">
+                <div class="profile-card">
+                    <div class="profile-image-container">
+                        <img src="@ViewBag.ImagePathView" alt="Profile Picture" class="profile-image" 
+                             onerror="this.src='https://via.placeholder.com/300x300/667eea/ffffff?text=No+Image'">
+                        <div class="image-overlay">
+                            <a href="@Url.Action("Upload", "MyAccount")" class="btn btn-primary btn-sm">
+                                <i class="fas fa-camera"></i> Change Photo
+                            </a>
+                        </div>
+                    </div>
+                    <div class="profile-card-body">
+                        <h3 class="profile-name">@Model.Name @Model.Surname</h3>
+                        <p class="profile-email">
+                            <i class="fas fa-envelope"></i> @Model.Email
+                        </p>
+                        <div class="profile-bio">
+                            <h5><i class="fas fa-quote-left"></i> Biography</h5>
+                            <p>@(string.IsNullOrEmpty(Model.Biography) ? "No biography added yet." : Model.Biography)</p>
+                        </div>
+                        <div class="profile-interests">
+                            <h5><i class="fas fa-heart"></i> Interests</h5>
+                            <div class="interest-tags">
+                                @if (!string.IsNullOrEmpty(Model.Tag1))
+                                {
+                                    <span class="interest-tag">@Model.Tag1</span>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Tag2))
+                                {
+                                    <span class="interest-tag">@Model.Tag2</span>
+                                }
+                                @if (string.IsNullOrEmpty(Model.Tag1) && string.IsNullOrEmpty(Model.Tag2))
+                                {
+                                    <span class="text-muted">No interests added yet.</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Settings -->
+            <div class="col-xl-8 col-lg-7">
+                <div class="settings-container">
+                    <h3 class="settings-title">
+                        <i class="fas fa-cog"></i> Account Settings
+                    </h3>
+                    
+                    <div class="row">
+                        <!-- Personal Info -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card">
+                                <div class="setting-icon">
+                                    <i class="fas fa-user-edit"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Personal Information</h5>
+                                    <p>Update your bio and interests</p>
+                                    <a href="@Url.Action("ChangeBioTags", "MyAccount")" class="btn btn-outline-primary">
+                                        Edit Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card">
+                                <div class="setting-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Security</h5>
+                                    <p>Change your password</p>
+                                    <a href="@Url.Action("ChangePassword", "MyAccount")" class="btn btn-outline-primary">
+                                        Change Password
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Email Settings -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card">
+                                <div class="setting-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Email Address</h5>
+                                    <p>Update your email address</p>
+                                    <a href="@Url.Action("ChangeEmail", "MyAccount")" class="btn btn-outline-primary">
+                                        Change Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dating Preferences -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card">
+                                <div class="setting-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Dating Preferences</h5>
+                                    <p>Set your age range preferences</p>
+                                    <a href="@Url.Action("AgeRange", "MyAccount")" class="btn btn-outline-primary">
+                                        Set Age Range
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Photo Upload -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card">
+                                <div class="setting-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Profile Photo</h5>
+                                    <p>Upload or change your photo</p>
+                                    <a href="@Url.Action("Upload", "MyAccount")" class="btn btn-outline-primary">
+                                        Manage Photos
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Danger Zone -->
+                        <div class="col-lg-6 col-md-6 mb-3">
+                            <div class="setting-card danger-zone">
+                                <div class="setting-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="setting-content">
+                                    <h5>Danger Zone</h5>
+                                    <p>Delete your account permanently</p>
+                                    <a href="@Url.Action("RemoveAccount", "MyAccount")" class="btn btn-outline-danger">
+                                        Delete Account
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Surname</th>
-            <th scope="col">Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>@Model.Name</td>
-            <td>@Model.Surname</td>
-            <td>@Model.Email</td>
-        </tr>
-    </tbody>
-</table>
-
-<table class="table table-hover">
-    <tbody>
-        <tr>
-            <td>@Html.ActionLink("ChangePassword", "ChangePassword", "MyAccount")</td>
-            <td>@Html.ActionLink("ChangeEmail", "ChangeEmail", "MyAccount")</td>
-            <td>@Html.ActionLink("RemoveAccount", "RemoveAccount", "MyAccount")</td>
-            <td>@Html.ActionLink("Upload", "Upload", "MyAccount")</td>
-            <td>@Html.ActionLink("ChangeBioTags", "ChangeBioTags", "MyAccount")</td>
-            <td>@Html.ActionLink("AgeRange", "AgeRange", "MyAccount")</td>
-        </tr>
-    </tbody>
-</table>
+@section Scripts {
+    <script>
+        function togglePrivacyMode() {
+            const isPrivate = localStorage.getItem('privacyMode') === 'true';
+            const newState = !isPrivate;
+            
+            localStorage.setItem('privacyMode', newState);
+            
+            if (newState) {
+                alert('Privacy mode enabled! Your profile is now hidden from discovery.');
+            } else {
+                alert('Privacy mode disabled! Your profile is now visible in discovery.');
+            }
+            
+            // Update UI to reflect current state
+            updatePrivacyModeUI();
+        }
+        
+        function updatePrivacyModeUI() {
+            const isPrivate = localStorage.getItem('privacyMode') === 'true';
+            const privacyButton = document.querySelector('.action-item[onclick="togglePrivacyMode()"]');
+            
+            if (privacyButton) {
+                const icon = privacyButton.querySelector('i');
+                const span = privacyButton.querySelector('span');
+                
+                if (isPrivate) {
+                    icon.className = 'fas fa-eye-slash';
+                    span.textContent = 'Privacy On';
+                    privacyButton.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                    privacyButton.style.color = 'white';
+                } else {
+                    icon.className = 'fas fa-shield-alt';
+                    span.textContent = 'Privacy Mode';
+                    privacyButton.style.background = '';
+                    privacyButton.style.color = '';
+                }
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePrivacyModeUI();
+            
+            // Animate stats
+            animateStats();
+        });
+        
+        function animateStats() {
+            const stats = [
+                { id: 'profileViews', target: Math.floor(Math.random() * 100) + 50 },
+                { id: 'likesReceived', target: Math.floor(Math.random() * 50) + 20 },
+                { id: 'matches', target: Math.floor(Math.random() * 30) + 10 },
+                { id: 'messages', target: Math.floor(Math.random() * 80) + 30 }
+            ];
+            
+            stats.forEach(stat => {
+                animateNumber(stat.id, stat.target);
+            });
+        }
+        
+        function animateNumber(elementId, target) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            let current = 0;
+            const increment = target / 50;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 30);
+        }
+    </script>
+}

@@ -1,0 +1,118 @@
+@model List<webappproject.Models.BannedUser>
+@{
+    ViewBag.Title = "Banned Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-6 text-dark mb-1">
+                        <i class="fas fa-ban text-danger me-3"></i>Banned Users
+                    </h1>
+                    <p class="text-muted mb-0">Manage banned users and their ban status</p>
+                </div>
+                <div>
+                    <a href="@Url.Action("Index", "Admin")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>Banned Users List
+                        <span class="badge bg-danger ms-2">@Model.Count</span>
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Reason</th>
+                                        <th>Banned By</th>
+                                        <th>Ban Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var bannedUser in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-user-slash text-danger me-2"></i>
+                                                    @bannedUser.Email
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-warning text-dark">@bannedUser.Reason</span>
+                                            </td>
+                                            <td>@bannedUser.BannedBy</td>
+                                            <td>@bannedUser.BanDate.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                <button class="btn btn-success btn-sm" onclick="unbanUser(@bannedUser.UserId, '@bannedUser.Email')">
+                                                    <i class="fas fa-unlock me-1"></i>Unban
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h4>No Banned Users</h4>
+                            <p class="text-muted">Great! There are currently no banned users on the platform.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function unbanUser(userId, email) {
+    if (!confirm(`Are you sure you want to unban ${email}?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/Admin/UnbanUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            },
+            body: JSON.stringify({ userId: userId })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('User unbanned successfully!');
+            location.reload();
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while unbanning the user.');
+    }
+}
+</script>

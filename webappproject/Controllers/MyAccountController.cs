@@ -15,10 +15,14 @@ using Microsoft.AspNetCore.Builder.Extensions;
 namespace webappproject.Controllers
 {
     [Authorize(Roles = "User")]
-    public class MyAccountController : Controller
+    public class MyAccountController : BaseController
     {
+        private readonly UserService _userService;
 
-        UserService _userService = new UserService();
+        public MyAccountController(UserService userService, BanService banService) : base(banService)
+        {
+            _userService = userService;
+        }
 
 
         public async Task<IActionResult> Index()
@@ -28,9 +32,27 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
-            var model = new User { Name = user.Name, Surname = user.Surname, Email = user.Email, Biography = user.Biography, Tag1 = user.Tag1, Tag2 = user.Tag2 };
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            var model = new User 
+            { 
+                Name = user.Name ?? "", 
+                Surname = user.Surname ?? "", 
+                Email = user.Email ?? "", 
+                Biography = user.Biography ?? "", 
+                Tag1 = user.Tag1 ?? "", 
+                Tag2 = user.Tag2 ?? "" 
+            };
 
             var ImagePath = user.ImagePath;
 
@@ -51,8 +73,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             ChangePasswordVM model = new ChangePasswordVM { };
 
@@ -67,8 +98,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             if (model.oldPassword == user.Password)
             {
@@ -104,8 +144,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             ChangeEmailVM model = new ChangeEmailVM { };
 
@@ -120,8 +169,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             if (_userService.CheckEmail(model.newEmail))
             {
@@ -159,8 +217,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             RemoveAccountVM model = new RemoveAccountVM { };
 
@@ -174,8 +241,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             if (model.Verify == "YES I WANT TO DELETE THE ACCOUNT")
             {
@@ -200,8 +276,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             return View();
         }
@@ -214,9 +299,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
-            var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
+            var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             if (imageFile != null && imageFile.Length > 0)
             {
@@ -274,8 +367,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             ChangeBioTagsVM model = new ChangeBioTagsVM { };
 
@@ -290,17 +392,26 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             if (model.Tag1 == model.Tag2)
             {
                 TempData["error"] += "Tag1 and Tag2 can not be chosen as same!";
             }
 
-            user.Tag1 = model.Tag1;
-            user.Tag2 = model.Tag2;
-            user.Biography = model.Biography;
+            user.Tag1 = string.IsNullOrEmpty(model.Tag1) ? "" : model.Tag1;
+            user.Tag2 = string.IsNullOrEmpty(model.Tag2) ? "" : model.Tag2;
+            user.Biography = string.IsNullOrEmpty(model.Biography) ? "" : model.Biography;
             _userService.Update(user, user.Id);
 
             if (user.FirstLogIn == true)
@@ -318,8 +429,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             ChangeAgeRange model = new ChangeAgeRange { };
 
@@ -334,8 +454,17 @@ namespace webappproject.Controllers
 
             var ticket = await HttpContext.AuthenticateAsync(cookieName);
 
-            var email = ticket.Principal.FindFirst(ClaimTypes.Email)?.Value;
+            var email = ticket.Principal?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             var user = _userService.Get(x => x.Email == email).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
 
             user.SliderValue1 = model.SliderValue1;
             user.SliderValue2 = model.SliderValue2;

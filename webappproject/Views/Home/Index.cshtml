@@ -1,8 +1,98 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "LoveConnect - Find Your Perfect Match";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">💖 LoveConnect</h1>
+            <p class="hero-subtitle">Where Hearts Meet Technology</p>
+            <p class="hero-description">
+                Discover meaningful connections with people who share your interests, values, and dreams. 
+                Our advanced matching algorithm brings together compatible souls in a safe, engaging environment.
+            </p>
+            <div class="hero-buttons">
+                @if (Context.User?.Identity?.IsAuthenticated != true)
+                {
+                    <a href="@Url.Action("Index", "Register")" class="btn-gradient pulse-animation">
+                        🚀 Start Your Journey
+                    </a>
+                    <a href="@Url.Action("Index", "Login")" class="btn-outline-gradient">
+                        💝 Sign In
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("RandomProfiles", "User")" class="btn-gradient pulse-animation">
+                        🔥 Discover Matches
+                    </a>
+                    <a href="@Url.Action("Index", "MyAccount")" class="btn-outline-gradient">
+                        👤 My Profile
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (Context.User?.Identity?.IsAuthenticated != true)
+{
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-4 fw-bold text-dark mb-3">Why Choose LoveConnect?</h2>
+                    <p class="lead text-muted">Experience dating like never before with our innovative features</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon love">
+                            💕
+                        </div>
+                        <h3 class="feature-title">Smart Matching</h3>
+                        <p class="feature-description">
+                            Our AI-powered algorithm analyzes your preferences, interests, and personality 
+                            to find your most compatible matches.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon match">
+                            ⚡
+                        </div>
+                        <h3 class="feature-title">Instant Connections</h3>
+                        <p class="feature-description">
+                            Connect instantly with people nearby or around the world. Distance is just a number 
+                            when it comes to true love.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon chat">
+                            💬
+                        </div>
+                        <h3 class="feature-title">Safe & Secure</h3>
+                        <p class="feature-description">
+                            Your privacy and safety are our top priorities. Enjoy secure messaging and 
+                            verified profiles in a trusted environment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <h3 class="mb-4">Ready to Find Love?</h3>
+                    <a href="@Url.Action("Index", "Register")" class="btn-gradient">
+                        💖 Join LoveConnect Today
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+}

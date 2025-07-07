@@ -1,0 +1,197 @@
+@model User
+
+@{
+    ViewData["Title"] = "Admin Profile";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient-primary text-white">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-shield fa-2x me-3"></i>
+                        <div>
+                            <h4 class="mb-0">Admin Profile</h4>
+                            <p class="mb-0 opacity-75">Manage your administrator account</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Success/Error Messages -->
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Profile" method="post" class="needs-validation" novalidate>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">
+                                    <i class="fas fa-user me-1"></i> First Name
+                                </label>
+                                <input asp-for="Name" class="form-control form-control-lg" placeholder="Enter your first name" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Surname" class="form-label">
+                                    <i class="fas fa-user me-1"></i> Last Name
+                                </label>
+                                <input asp-for="Surname" class="form-control form-control-lg" placeholder="Enter your last name" required />
+                                <span asp-validation-for="Surname" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label">
+                                    <i class="fas fa-envelope me-1"></i> Email
+                                </label>
+                                <input asp-for="Email" class="form-control form-control-lg" readonly style="background-color: #f8f9fa;" />
+                                <small class="text-muted">Email cannot be changed</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Age" class="form-label">
+                                    <i class="fas fa-calendar me-1"></i> Age
+                                </label>
+                                <input asp-for="Age" type="number" class="form-control form-control-lg" min="18" max="100" placeholder="Enter your age" />
+                                <span asp-validation-for="Age" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-shield-alt me-1"></i> Role
+                            </label>
+                            <input value="Administrator" class="form-control form-control-lg" readonly style="background-color: #f8f9fa;" />
+                            <small class="text-muted">Role cannot be changed</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Biography" class="form-label">
+                                <i class="fas fa-info-circle me-1"></i> Biography
+                            </label>
+                            <textarea asp-for="Biography" class="form-control" rows="4" placeholder="Tell us about yourself..."></textarea>
+                            <span asp-validation-for="Biography" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="@Url.Action("Index", "Admin")" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i> Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Stats Card -->
+            <div class="card mt-4 shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i> Quick Stats
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                <h6>Total Users</h6>
+                                <small class="text-muted">Manage all users from the dashboard</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-ban fa-2x text-warning mb-2"></i>
+                                <h6>Banned Users</h6>
+                                <small class="text-muted">Monitor banned accounts</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3">
+                                <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                                <h6>System Admin</h6>
+                                <small class="text-muted">Full system access</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+    border-radius: 10px;
+}
+
+.alert {
+    border-radius: 15px;
+    border: none;
+}
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Bootstrap form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}

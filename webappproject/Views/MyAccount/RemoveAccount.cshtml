@@ -1,30 +1,88 @@
 ﻿@model webappproject.MVVM.RemoveAccountVM
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Remove Account - LoveConnect";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("RemoveAccount", "MyAccount", FormMethod.Post, new { @id = "MyForm" }))
-{
-    <div class="form-horizontal">
-        <h2>Remove Account</h2>
-        <h3 style="color:red;">@TempData["Error"]</h3>
-        <hr />
+<div class="remove-account-container">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, var(--coral), var(--rose-gold)) !important;">
+                        <h2 class="mb-0">
+                            <i class="fas fa-user-times me-2"></i>
+                            Remove Account
+                        </h2>
+                        <p class="mb-0 mt-2 opacity-75">We're sorry to see you go. Please confirm your password to delete your account.</p>
+                    </div>
+                    
+                    <div class="card-body p-5">
+                        @using (Html.BeginForm("RemoveAccount", "MyAccount", FormMethod.Post, new { @class = "remove-account-form", @id = "removeAccountForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            
+                            <div class="mb-4">
+                                <label for="Verify" class="form-label fw-semibold">
+                                    <i class="fas fa-lock text-danger me-2"></i>Confirm Password
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-key"></i>
+                                    </span>
+                                    @Html.EditorFor(model => model.Verify, new { htmlAttributes = new { 
+                                        @class = "form-control form-control-lg", 
+                                        @type = "password", 
+                                        @placeholder = "Enter your password to confirm",
+                                        @autocomplete = "current-password",
+                                        @id = "Verify"
+                                    } })
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Verify, "", new { @class = "text-danger small mt-1" })
+                            </div>
 
-        <h4>If you want to delete your accoun type "YES I WANT TO DELETE THE ACCOUNT"</h4>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Verify, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Verify, new { htmlAttributes = new { @class = "form-control",@type="text" } })
-                @Html.ValidationMessageFor(model => model.Verify, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Warning:</strong> This action cannot be undone. All your data will be permanently deleted.
+                            </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Remove Account" class="btn btn-default" />
+                            <div class="d-grid gap-2 mb-4">
+                                <button type="submit" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-trash me-2"></i>Delete My Account
+                                </button>
+                            </div>
+                            
+                            <div class="text-center">
+                                <a href="@Url.Action("Index", "MyAccount")" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Cancel
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-}
+</div>
+
+<script>
+// Password toggle functionality
+document.getElementById('togglePassword')?.addEventListener('click', function() {
+    const password = document.getElementById('Verify');
+    const icon = this.querySelector('i');
+    
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+</script>

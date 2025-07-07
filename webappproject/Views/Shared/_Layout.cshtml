@@ -3,70 +3,259 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - webappproject</title>
+    <title>@ViewData["Title"] - LoveConnect</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/webappproject.styles.css" asp-append-version="true" />
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="app-layout">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">webappproject</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-heart"></i> LoveConnect
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-
-                        @if (Context.User.Identity.IsAuthenticated)
-                        {           
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MyAccount" asp-action="Index">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="RandomProfiles">Random Profiles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin Page</a>
-                            </li>
-                            <li>@Html.ActionLink("LogOut", "Logout", "Login")</li>
+                        @if (Context.User?.Identity?.IsAuthenticated == true)
+                        {
+                            @if (Context.User?.IsInRole("Admin") == true)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Index">
+                                        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Users">
+                                        <i class="fas fa-users"></i> Manage Users
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="BannedUsers">
+                                        <i class="fas fa-ban"></i> Banned Users
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="Profile">
+                                        <i class="fas fa-user-shield"></i> My Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <i class="fas fa-home"></i> Home
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                @if (ViewBag.IsBanned != true)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="MyAccount" asp-action="Index">
+                                            <i class="fas fa-user"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="RandomProfiles">
+                                            <i class="fas fa-compass"></i> Discover
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Matches">
+                                            <i class="fas fa-heart"></i> Matches
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-muted" href="#" onclick="showBanAlert(); return false;">
+                                            <i class="fas fa-ban"></i> Account Suspended
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">
+                                            <i class="fas fa-envelope"></i> Contact Support
+                                        </a>
+                                    </li>
+                                }
+                            }
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Register" asp-action="Index">Register</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="fas fa-home"></i> Home
+                                </a>
                             </li>
                         }
-
-
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (Context.User?.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> Welcome, @Context.User.Identity.Name
+                                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    @if (Context.User?.IsInRole("Admin") == true)
+                    {
+                        <li><a class="dropdown-item" href="@Url.Action("Profile", "Admin")">
+                            <i class="fas fa-user-shield"></i> Admin Profile
+                        </a></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "Admin")">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a></li>
+                    }
+                    else
+                    {
+                        <li><a class="dropdown-item" href="@Url.Action("Index", "MyAccount")">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a></li>
+                    }
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Login")">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a></li>
+                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Register" asp-action="Index">
+                                    <i class="fas fa-user-plus"></i> Register
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-primary ms-2 px-3" asp-area="" asp-controller="Login" asp-action="Index">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    
+    <div class="app-container">
+        <!-- Ban Alert for banned users -->
+        @if (ViewBag.IsBanned == true)
+        {
+            <div class="container-fluid px-4 pt-4">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-left: 5px solid #dc3545;">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-ban fa-2x me-3 text-danger"></i>
+                        <div class="flex-grow-1">
+                            <h5 class="alert-heading mb-2">
+                                <i class="fas fa-exclamation-triangle"></i> Account Suspended
+                            </h5>
+                            <p class="mb-2">
+                                Your account has been suspended@(ViewBag.BanDate != null ? $" on {ViewBag.BanDate}" : "").
+                                @if (!string.IsNullOrEmpty(ViewBag.BanReason?.ToString()))
+                                {
+                                    <br><strong>Reason:</strong> @ViewBag.BanReason
+                                }
+                            </p>
+                            <p class="mb-0">
+                                <small>
+                                    You cannot use site features while suspended. If you believe this is an error, please 
+                                    <a href="@Url.Action("Contact", "Home")" class="alert-link fw-bold">contact our support team</a>.
+                                </small>
+                            </p>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        }
+        <main role="main" class="main-content">
             @RenderBody()
         </main>
+
+        <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-heart"></i> LoveConnect</h5>
+                    <p>Connecting hearts worldwide since 2025. Find your perfect match today!</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                        <li><a href="@Url.Action("Index", "Register")">Register</a></li>
+                        <li><a href="@Url.Action("AboutUs", "Home")">About Us</a></li>
+                        <li><a href="@Url.Action("Contact", "Home")">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="@Url.Action("FaqPage", "Home")">FAQ</a></li>
+                        <li><a href="@Url.Action("HelpCenter", "Home")">Help Center</a></li>
+                        <li><a href="@Url.Action("PrivacyPolicy", "Home")">Privacy Policy</a></li>
+                        <li><a href="@Url.Action("TermsOfService", "Home")">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>&copy; 2025 LoveConnect. Made with <i class="fas fa-heart text-danger"></i> for finding love.</p>
+                </div>
+            </div>
+        </div>
+        </footer>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - webappproject - <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a> - <a asp-area="" asp-controller="Home" asp-action="FaqPage">FAQ</a>
-        </div>
-
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    @if (ViewBag.IsBanned == true)
+    {
+        <script>
+            function showBanAlert() {
+                alert('Your account has been suspended. You cannot use site features while suspended. Please contact support for assistance.');
+            }
+            
+            // Disable banned user interactions
+            document.addEventListener('DOMContentLoaded', function() {
+                // Disable all forms except contact form
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => {
+                    if (!form.action.includes('Contact') && !form.action.includes('Logout')) {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            showBanAlert();
+                        });
+                    }
+                });
+                
+                // Disable banned user links except logout and contact
+                const links = document.querySelectorAll('a[href*="/User/"], a[href*="/MyAccount/"]');
+                links.forEach(link => {
+                    if (!link.href.includes('Contact') && !link.href.includes('Logout')) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            showBanAlert();
+                        });
+                    }
+                });
+            });
+        </script>
+    }
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
