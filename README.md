@@ -232,36 +232,6 @@ The application embraces a **love-themed aesthetic** with:
 
 ---
 
-## 📝 **Project Credits**
-
-### **Academic Background (2023):**
-- **Original Repository:** WAT-Dating-WebSite
-- **Institution:** AGH University of Science and Technology, Krakow
-- **Faculty:** Computer Science (Bachelor's Degree)
-- **Course:** Web Application Technologies - 3rd Year, 6th Semester
-- **Creation Date:** 2023
-- **Original Scope:** University assignment for dating website development
-- **Original Features:** Basic user authentication, profile creation, simple matchmaking, chat functionality
-
-### **Current Version - Complete Professional Redesign (2025):**
-- **New Project Name:** LoveConnect - Modern Dating Platform
-- **Developer:** Oğuzhan Berke Özdil
-- **Redesign Date:** July 7, 2025
-- **Project Status:** Completely rebuilt from scratch
-- **Technologies:** ASP.NET Core 8.0, SQLite, Bootstrap 5
-- **New Scope:** Professional-grade dating platform with enterprise-level features
-
-### **Major Improvements from Original (2023 → 2025):**
-- ✅ **Complete Technology Upgrade** - Modern ASP.NET Core 8.0 framework
-- ✅ **Professional UI/UX Redesign** - Love-themed aesthetic with modern design principles
-- ✅ **Advanced Admin Dashboard** - Comprehensive user management and analytics
-- ✅ **Enhanced Security** - CSRF protection, input sanitization, secure authentication
-- ✅ **Modern Responsive Design** - Mobile-first approach for all devices
-- ✅ **Performance Optimization** - Efficient database queries and optimized assets
-- ✅ **Professional Code Structure** - Clean architecture and comprehensive documentation
-- ✅ **Advanced User Management** - Ban system, profile customization, account controls
-- ✅ **Production-Ready Features** - Logging, error handling, deployment optimization
-
-**Evolution:** From university assignment to professional-grade application showcasing modern web development best practices.
+**Evolution:** From university group assignment (2023) to professional-grade application (2025) showcasing modern web development best practices by one of the original team members.
 
 
